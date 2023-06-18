@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: right;
+}
+
+.bio {
+    margin-left: 0.5em;
+}
+
+.pics {
+    text-align: left; /*for centering images inside*/
+}
+.pics img {
+    width: 60em;
+    height: 40em;
+    object-fit: cover;
+}
+
+.project {
+    text-align: right;
+}
+
+.projects {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.photographer {
+    font-style: italic;
+    font-size: smaller;
+}
