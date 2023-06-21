@@ -20,10 +20,10 @@
 .pics {
     text-align: left; /*for centering images inside*/
 }
-.pics img {
-    width: 60em;
-    height: 40em;
-    object-fit: cover;
+.images {
+    width: 45em;
+    height: 30em;
+    object-fit: scale-down;
 }
 
 .project {
@@ -44,4 +44,20 @@
 .photographer {
     font-style: italic;
     font-size: smaller;
+}
+@media (max-width: 1000px) {
+    .images {
+        width: 100%;
+        object-fit: scale-down;
+    }
+    .projects {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        flex-direction: column;
+    }
+    .project {
+        width: 100%;
+        padding: 0 0.5em;
+    }
 }
