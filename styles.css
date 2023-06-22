@@ -5,6 +5,57 @@
     font-family: "Times New Roman", Times, serif;
 }
 
+.name {
+    background: linear-gradient(0deg, rgb(190, 255, 0), rgb(190, 255, 0))
+        no-repeat right bottom / 0 var(--bg-h);
+    transition: background-size 0ms;
+    --bg-h: 100%;
+}
+.name:where(:hover, :focus-visible) {
+    background-size: 100% var(--bg-h);
+    background-position-x: left;
+}
+
+.contact {
+    background: linear-gradient(0deg, rgb(255, 212, 105), rgb(255, 212, 105))
+        no-repeat right bottom / 0 var(--bg-h);
+    transition: background-size 0ms;
+    --bg-h: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.contact:where(:hover, :focus-visible) {
+    background-size: 100% var(--bg-h);
+    background-position-x: left;
+}
+
+.projects {
+    background: linear-gradient(
+            0deg,
+            rgba(191, 255, 0, 0),
+            rgba(191, 255, 0, 0.537)
+        )
+        no-repeat right bottom / 0 var(--bg-h);
+    transition: background-size 0ms;
+    --bg-h: 100%;
+}
+.projects:where(:hover, :focus-visible) {
+    background-size: 100% var(--bg-h);
+    background-position-x: left;
+}
+
+.bio {
+    background: linear-gradient(0deg, rgb(190, 169, 254), rgb(190, 169, 254))
+        no-repeat right bottom / 0 var(--bg-h);
+    transition: background-size 0ms;
+    --bg-h: 100%;
+}
+.bio:where(:hover, :focus-visible) {
+    background-size: 100% var(--bg-h);
+    background-position-x: left;
+}
+
 .footer {
     position: fixed;
     left: 0;
