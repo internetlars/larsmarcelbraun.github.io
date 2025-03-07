@@ -54,8 +54,13 @@
 
 /* Apply parallax effect */
 .bio, .projects {
-    animation: parallaxScroll linear;
-    animation-timeline: scroll();
+    position: relative; /* Needed for animation */
+    animation: parallaxScroll linear both;
+    animation-timeline: scroll(root);
+}
+
+body {
+    min-height: 200vh; /* Ensures scrolling space */
 }
 
 .bio {
