@@ -8,6 +8,34 @@
         <link rel="icon" type="image/x-icon" href="./favicon.ico">
 
         <title>lars marcel braun</title>
+        <style>
+            /* Fixing Parallax Effect Without Breaking Layout */
+            @keyframes parallaxScroll {
+                from { transform: translateY(0px); }
+                to { transform: translateY(-30px); } /* Subtle movement */
+            }
+            
+            .parallax {
+                will-change: transform;
+                animation: parallaxScroll linear;
+                animation-timeline: scroll();
+            }
+            
+            /* Ensure Everything Stays Visible */
+            .bio, .projects {
+                position: relative;
+                z-index: 2;
+            }
+            
+            /* Keep Name Fixed */
+            .name {
+                position: fixed;
+                top: 10px;
+                left: 20px;
+                z-index: 10;
+                background: transparent;
+            }
+        </style>
     </head>
     <body>
         <div class="name">lars marcel braun</div>
@@ -37,9 +65,6 @@
             <div class="pics">
                 <div><img class="images" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_005.jpg" alt="" /></div>
                 <div><img class="images" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_029.jpg" alt="" /></div>
-                <div><img class="images" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_034.jpg" alt="" /></div>
-                <div><img class="images" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_027.jpg" alt="" /></div>
-                <div><img class="images" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_041.jpg" alt="" /></div>
             </div>
             <div class="project">
                 <p class="name">la traviata</p>
@@ -52,9 +77,6 @@
             <div class="pics">
                 <div><img class="images" src="./websitepics/traviata1.jpg" alt="" /></div>
                 <div><img class="images" src="./websitepics/traviata2.jpg" alt="" /></div>
-                <div><img class="images" src="./websitepics/traviata3.jpg" alt="" /></div>
-                <div><img class="images" src="./websitepics/traviata4.jpg" alt="" /></div>
-                <div><img class="images" src="./websitepics/traviata5.jpg" alt="" /></div>
             </div>
             <div class="project">
                 <p class="name">you are not what you say i am</p>
@@ -65,9 +87,6 @@
             <div class="pics">
                 <div><img class="images" src="./websitepics/IMG_9403.jpg" alt="" /></div>
                 <div><img class="images" src="./websitepics/kyle_performance_2.webp" alt="" /></div>
-                <div><img class="images" src="./websitepics/IMG_9419.jpg" alt="" /></div>
-                <div><img class="images" src="./websitepics/cassandre_performance_2.webp" alt="" /></div>
-                <div><img class="images" src="./websitepics/NDT_performance_2.webp" alt="" /></div>
             </div>
             <div class="project">
                 <p class="name">slagroom</p>
@@ -78,10 +97,6 @@
             <div class="pics">
                 <div><img class="images" src="./websitepics/milkshake-12.webp" alt="" /></div>
                 <div><img class="images" src="./websitepics/milkshake-14.webp" alt="" /></div>
-                <div><img class="images" src="./websitepics/milkshake-16.webp" alt="" /></div>
-                <div><img class="images" src="./websitepics/milkshake-18.webp" alt="" /></div>
-                <div><img class="images" src="./websitepics/milkshake-19.webp" alt="" /></div>
-                <div><img class="images" src="./websitepics/milkshake-5.webp" alt="" /></div>
             </div>
         </div>
         <footer class="footer">© lars marcel braun 2025</footer>
