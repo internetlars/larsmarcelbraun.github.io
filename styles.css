@@ -17,6 +17,13 @@
     background-position-x: left;
 }
 
+.performance-info {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #000; /* Optional, for a border around the div */
+      background-color: #fff; /* Optional, for background color */
+    }
+
 .contact {
     background: linear-gradient(0deg, rgb(255, 212, 105), rgb(255, 212, 105))
         no-repeat right bottom / 0 var(--bg-h);
