@@ -150,10 +150,24 @@
             order: 1;
             scroll-snap-type: y mandatory;
             overflow-y: scroll;
-            height: 100vh;
+            height: 80vh;
             padding: 0;
             box-sizing: border-box;
             scroll-behavior: smooth;
+        }
+
+        .image-gallery.with-sticky-text .content-image {
+            width: 100%;
+            height: 80vh;
+            object-fit: cover;
+            border: none;
+            display: block;
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            border-radius: 4px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex-shrink: 0;
         }
 
         .image-gallery.with-sticky-text::-webkit-scrollbar {
@@ -175,16 +189,15 @@
 
         .content-image {
             width: 100%;
-            height: 100vh;
+            height: 400px;
             object-fit: cover;
             border: none;
             display: block;
-            scroll-snap-align: start;
+            scroll-snap-align: center;
             scroll-snap-stop: always;
             border-radius: 4px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            flex-shrink: 0;
         }
 
         .content-image:hover {
