@@ -75,11 +75,32 @@
             display: block;
         }
 
-        /* New layout for sections with images */
+        /* Animation for images */
+        .content-image, iframe {
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .content-section.active .content-image,
+        .content-section.active iframe {
+            animation: fadeIn 0.8s ease-in-out 0.3s forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* New layout for sections with images - images centered, text on right */
         .content-with-images {
             display: flex;
             gap: 40px;
             align-items: flex-start;
+            justify-content: center;
         }
 
         .content-text {
@@ -95,18 +116,20 @@
             margin: 0 0 40px auto;
         }
 
-        /* Sticky text styling for sections with images */
+        /* Sticky text styling for sections with images - now on the right */
         .content-text.sticky {
             position: sticky;
             top: 40px;
             flex-shrink: 0;
             width: 280px;
             margin: 0;
+            order: 2;
         }
 
         .content-text.sticky.right-align {
             text-align: right;
             margin: 0;
+            order: 2;
         }
 
         .image-gallery {
@@ -117,10 +140,12 @@
             max-width: 600px;
         }
 
-        /* When sticky text is used, adjust gallery */
+        /* When sticky text is used, adjust gallery - now centered */
         .image-gallery.with-sticky-text {
             margin: 0;
             flex: 1;
+            max-width: 600px;
+            order: 1;
         }
 
         .content-image {
@@ -200,7 +225,7 @@
                 object-fit: contain;
             }
 
-            /* Disable sticky on mobile */
+            /* Disable sticky on mobile and put text above images */
             .content-with-images {
                 flex-direction: column;
                 gap: 20px;
@@ -210,14 +235,17 @@
                 position: static;
                 width: 100%;
                 margin: 0 0 20px 0;
+                order: 1;
             }
 
             .content-text.sticky.right-align {
                 margin: 0 0 20px 0;
+                order: 1;
             }
 
             .image-gallery.with-sticky-text {
                 margin: 0;
+                order: 2;
             }
         }
     </style>
