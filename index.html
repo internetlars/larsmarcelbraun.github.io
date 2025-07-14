@@ -131,6 +131,14 @@
             display: block;
         }
 
+        /* Special styling for portrait image - original size */
+        .content-image.portrait {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            object-fit: none;
+        }
+
         .content-link {
             color: black;
             text-decoration: none;
@@ -181,6 +189,14 @@
             .content-image {
                 height: auto;
                 max-height: 50vh;
+                object-fit: contain;
+            }
+
+            /* Portrait image on mobile */
+            .content-image.portrait {
+                width: 100%;
+                height: auto;
+                max-width: 100%;
                 object-fit: contain;
             }
 
@@ -235,7 +251,7 @@ His own artistic projects include a series of immersive installations at Milksha
 Lars is a fellow of Akademie Musiktheater heute in the 2024–2026 selection.
                 </div>
                 <div class="image-gallery">
-                    <img class="content-image" src="./websitepics/larsi2017.jpeg" alt="Lars Marcel Braun portrait">
+                    <img class="content-image portrait" src="./websitepics/larsi2017.jpeg" alt="Lars Marcel Braun portrait">
                 </div>
             </div>
 
