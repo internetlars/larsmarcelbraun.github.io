@@ -142,7 +142,7 @@
             max-width: 600px;
         }
 
-        /* When sticky text is used, adjust gallery - now centered with parallax */
+        /* FIXED: When sticky text is used, adjust gallery - now shows full images with parallax */
         .image-gallery.with-sticky-text {
             margin: 0;
             flex: 1;
@@ -156,18 +156,21 @@
             scroll-behavior: smooth;
         }
 
+        /* FIXED: Images now maintain aspect ratio and show full content */
         .image-gallery.with-sticky-text .content-image {
             width: 100%;
-            height: 80vh;
-            object-fit: cover;
+            height: auto; /* Changed from 80vh to auto */
+            min-height: 80vh; /* Increased to fill viewport and prevent hints */
+            object-fit: contain; /* Changed from cover to contain */
             border: none;
             display: block;
-            scroll-snap-align: start;
+            scroll-snap-align: start; /* Changed back to start for clean transitions */
             scroll-snap-stop: always;
             border-radius: 4px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             flex-shrink: 0;
+            margin-bottom: 0; /* Remove margin to prevent hints */
         }
 
         .image-gallery.with-sticky-text::-webkit-scrollbar {
@@ -467,10 +470,8 @@ w/ all drag performers in attendance and guests of the festival</div>
                             <img class="content-image" src="./websitepics/humanoid_ohp_04242_FotoSebastianHoppe.jpg" alt="Humanoid production photo 4">
                             <img class="content-image" src="./websitepics/humanoid_ohp_04631_FotoSebastianHoppe.jpg" alt="Humanoid production photo 5">
                             <iframe class="content-image" src="https://www.youtube.com/embed/HPpQgKOiwak?si=bCGk0XFLG5mZTA5k" title="Humanoid trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-
                         </div>
-                                                <div class="credits with-sticky-text">*photos copyright sebastian hoppe*</div>
-
+                        <div class="credits with-sticky-text">*photos copyright sebastian hoppe*</div>
                     </div>
                 </div>
             </div>
