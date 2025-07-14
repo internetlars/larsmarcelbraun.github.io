@@ -109,21 +109,7 @@
             }
 
             .image-gallery {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-
-            .image-large {
-                grid-column: span 1;
-                height: 400px;
-            }
-
-            .content-image {
-                height: 300px;
-            }
-
-            .image-small {
-                height: 250px;
+                max-width: 100%;
             }
         }
 
@@ -142,10 +128,10 @@
 
         .image-gallery {
             margin: 40px 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 30px;
-            align-items: start;
+            max-width: 600px;
         }
 
         .content-image {
@@ -154,15 +140,6 @@
             object-fit: cover;
             border: 1px solid #ccc;
             display: block;
-        }
-
-        .image-large {
-            grid-column: span 2;
-            height: 500px;
-        }
-
-        .image-small {
-            height: 300px;
         }
 
         .content-link {
@@ -217,10 +194,10 @@ set&costumes: victor labarthe d'arnoux <br>
                     lights: daniel weiss
 (video upon request)</div>
                 <div class="image-gallery">
-                    <img class="content-image image-large" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_005.jpg" alt="Geschichte production photo 1">
+                    <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_005.jpg" alt="Geschichte production photo 1">
                     <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_029.jpg" alt="Geschichte production photo 2">
                     <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_034.jpg" alt="Geschichte production photo 3">
-                    <img class="content-image image-small" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_027.jpg" alt="Geschichte production photo 4">
+                    <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_027.jpg" alt="Geschichte production photo 4">
                 </div>
                 <div class="credits">*photos copyright werner kmetitsch*</div>
             </div>
@@ -235,7 +212,7 @@ regie/set/video: karsten wiegand
 (video upon request)</div>
                 <div class="image-gallery">
                     <img class="content-image" src="./websitepics/traviata1.jpg" alt="La Traviata production photo 1">
-                    <img class="content-image image-large" src="./websitepics/traviata2.jpg" alt="La Traviata production photo 2">
+                    <img class="content-image" src="./websitepics/traviata2.jpg" alt="La Traviata production photo 2">
                     <img class="content-image" src="websitepics/traviata3.jpg" alt="La Traviata production photo 4">
                     <img class="content-image" src="websitepics/traviata4.jpg" alt="La Traviata production photo 5">
                     <img class="content-image" src="websitepics/traviata5.jpg" alt="La Traviata production photo 6">
@@ -250,9 +227,9 @@ set: victor labarthe d'arnoux
                     lights: michiel knoop
                     vj: zoey vero</div>
                 <div class="image-gallery">
-                    <img class="content-image image-large" src="./websitepics/IMG_9403.jpg" alt="You Are Not installation photo 1">
+                    <img class="content-image" src="./websitepics/IMG_9403.jpg" alt="You Are Not installation photo 1">
                     <img class="content-image" src="./websitepics/kyle_performance_2.webp"  alt="You Are Not installation photo 2">
-                    <img class="content-image image-small" src="./websitepics/IMG_9419.jpg" alt="You Are Not installation photo 3">
+                    <img class="content-image" src="./websitepics/IMG_9419.jpg" alt="You Are Not installation photo 3">
                     <img class="content-image" src="./websitepics/cassandre_performance_2.webp" alt="You Are Not installation photo 4">
                     <img class="content-image" src="./websitepics/NDT_performance_2.webp" alt="You Are Not installation photo 5">
                 </div>
@@ -267,8 +244,8 @@ set: victor labarthe d'arnoux
                 <div class="image-gallery">
                     <img class="content-image" src="./websitepics/milkshake-12.webp" alt="Slagroom installation photo 1">
                     <img class="content-image" src="./websitepics/milkshake-14.webp" alt="Slagroom installation photo 2">
-                    <img class="content-image image-large" src="websitepics/milkshake-16.webp" alt="Slagroom installation photo 3">
-                    <img class="content-image image-small" src="./websitepics/milkshake-18.webp" alt="Slagroom installation photo 4">
+                    <img class="content-image" src="websitepics/milkshake-16.webp" alt="Slagroom installation photo 3">
+                    <img class="content-image" src="./websitepics/milkshake-18.webp" alt="Slagroom installation photo 4">
                     <img class="content-image" src="./websitepics/milkshake-19.webp"  alt="Slagroom installation photo 5">
                     <img class="content-image" src="./websitepics/milkshake-5.webp" alt="Slagroom installation photo 6">
                 </div>
@@ -292,9 +269,9 @@ set: victor labarthe d'arnoux
                 
                 </div>
                 <div class="image-gallery">
-                    <img class="content-image image-large" src="./websitepics/humanoid_khp_00934_FotoSebastianHoppe.jpg" alt="Humanoid production photo 1">
+                    <img class="content-image" src="./websitepics/humanoid_khp_00934_FotoSebastianHoppe.jpg" alt="Humanoid production photo 1">
                     <img class="content-image" src="./websitepics/humanoid_khp_00478_FotoSebastianHoppe.jpg" alt="Humanoid production photo 2">
-                    <img class="content-image image-small" src="./websitepics/humanoid_ohp_02256_FotoSebastianHoppe.jpg" alt="Humanoid production photo 3">
+                    <img class="content-image" src="./websitepics/humanoid_ohp_02256_FotoSebastianHoppe.jpg" alt="Humanoid production photo 3">
                     <img class="content-image" src="./websitepics/humanoid_ohp_04242_FotoSebastianHoppe.jpg" alt="Humanoid production photo 4">
                     <img class="content-image" src="./websitepics/humanoid_ohp_04631_FotoSebastianHoppe.jpg" alt="Humanoid production photo 5">
                 </div>
