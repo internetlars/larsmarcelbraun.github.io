@@ -248,100 +248,129 @@
         @media screen and (max-width: 768px) {
             .container {
                 flex-direction: column;
-                height: auto;
+                height: 100vh;
             }
 
             .sidebar {
-                display: none; /* Hide sidebar on mobile */
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 50vh;
+                background-color: white;
+                z-index: 1000;
+                overflow-y: auto;
+                border-bottom: 1px solid #eee;
             }
 
             .content-area {
                 margin-left: 0;
+                margin-top: 50vh;
                 width: 100%;
+                height: 50vh;
+                overflow-y: auto;
             }
 
-            /* Mobile: Show all content in one scrollable page */
+            /* Mobile: Only show active section */
             .content-section {
-                display: block !important; /* Show all sections */
-                padding: 20px;
-                min-height: auto;
-                border-bottom: 1px solid #eee;
+                display: none;
+                padding: 0;
+                min-height: 100%;
+                position: relative;
             }
 
-            .content-section:last-child {
-                border-bottom: none;
+            .content-section.active {
+                display: block;
             }
 
+            /* Mobile: Full-screen image gallery */
             .image-gallery {
                 max-width: 100%;
-            }
-
-            /* Mobile image styling - prevent cutoff */
-            .content-image {
-                height: auto;
-                max-height: 50vh;
-                object-fit: contain;
-                margin-bottom: 20px;
-            }
-
-            /* Portrait image on mobile - fit to screen width */
-            .content-image.portrait {
-                width: auto;
-                height: auto;
-                max-width: 100%;
-                object-fit: contain;
-            }
-
-            /* Mobile: Reorganize layout */
-            .content-with-images {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .content-text.sticky {
-                position: static;
-                width: 100%;
-                margin: 0 0 20px 0;
-                order: 1;
-            }
-
-            .content-text.sticky.right-align {
-                margin: 0 0 20px 0;
-                order: 1;
+                margin: 0;
+                height: 100%;
+                overflow-y: auto;
+                scroll-snap-type: y mandatory;
+                scroll-behavior: smooth;
             }
 
             .image-gallery.with-sticky-text {
                 margin: 0;
-                order: 2;
-                height: auto;
-                overflow-y: visible;
-                scroll-snap-type: none;
+                height: 100%;
+                overflow-y: auto;
+                scroll-snap-type: y mandatory;
+                padding: 0;
+            }
+
+            /* Mobile: Full-screen images */
+            .content-image {
+                width: 100%;
+                height: 50vh;
+                object-fit: cover;
+                margin-bottom: 0;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                border-radius: 0;
+                box-shadow: none;
             }
 
             .image-gallery.with-sticky-text .content-image {
-                min-height: auto;
-                height: auto;
-                max-height: 50vh;
-                object-fit: contain;
-                margin-bottom: 20px;
-                scroll-snap-align: none;
+                width: 100%;
+                height: 50vh;
+                object-fit: cover;
+                margin-bottom: 0;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                border-radius: 0;
+                box-shadow: none;
+                min-height: 50vh;
             }
 
-            /* Mobile: Add section headers */
-            .content-section::before {
-                content: attr(data-section-title);
-                display: block;
-                font-weight: bold;
-                margin-bottom: 20px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid #ddd;
+            /* Mobile: Text as final "image" in gallery */
+            .mobile-text-card {
+                width: 100%;
+                height: 50vh;
+                background-color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+                box-sizing: border-box;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                border-top: 1px solid #eee;
             }
 
-            /* Hide before pseudo-element for certain sections */
-            .content-section#lars-marcel-braun::before,
-            .content-section#email::before,
-            .content-section#instagram::before {
+            .mobile-text-content {
+                text-align: center;
+                line-height: 1.4;
+                white-space: pre-line;
+            }
+
+            .mobile-text-content.right-align {
+                text-align: right;
+            }
+
+            /* Mobile: Hide desktop text */
+            .content-text.sticky {
                 display: none;
+            }
+
+            /* Mobile: Remove image reorganization */
+            .content-with-images {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            /* Mobile: Credits styling */
+            .credits.with-sticky-text {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                background: rgba(255, 255, 255, 0.9);
+                padding: 5px 10px;
+                border-radius: 3px;
+                font-size: 10px;
+                z-index: 10;
             }
         }
     </style>
@@ -398,6 +427,19 @@ w/ ana caseiro, ellen rose kelly, felix heuser, johannes wieners, harald hierony
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_025.jpg" alt="Geschichte production photo 5">
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_012.jpg" alt="Geschichte production photo 6">
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_027.jpg" alt="Geschichte production photo 7">
+                            <div class="mobile-text-card">
+                                <div class="mobile-text-content right-align">geschichte
+operetta a capella by oscar strasnoy, based on fragments from witold gombrowicz (2003)
+oper graz
+premiere 25.4.23
+director: lars marcel braun
+set & costumes: victor labarthe d'arnoux
+lights: daniel weiss
+dramaturgy: dorothee harpain
+w/ ana caseiro, ellen rose kelly, felix heuser, johannes wieners, harald hieronymus hein
+
+(video upon request)</div>
+                            </div>
                         </div>
                         <div class="credits with-sticky-text">*photos copyright werner kmetitsch*</div>
                     </div>
@@ -425,6 +467,20 @@ w/ hila baggio, cathrin lange, solgerd isalv, ingrid katzengruber, andres agudel
                             <img class="content-image" src="websitepics/traviata3.jpg" alt="La Traviata production photo 4">
                             <img class="content-image" src="websitepics/traviata4.jpg" alt="La Traviata production photo 5">
                             <img class="content-image" src="websitepics/traviata5.jpg" alt="La Traviata production photo 6">
+                            <div class="mobile-text-card">
+                                <div class="mobile-text-content">la traviata
+opera in three acts by giuseppe verdi
+staatstheater darmstadt
+premiere 28.1.23
+conductor: daniel cohen
+director: karsten wiegand
+associate director: lars marcel braun
+costumes: alfred mayerhofer
+choreo: otto pichler
+dramaturgy: isabelle becker
+
+w/ hila baggio, cathrin lange, solgerd isalv, ingrid katzengruber, andres agudelo, matthew vickers, aluda todua, julian orlishausen, michael pegher, marco mondragón, david pichlmaier, jared ice, opernchor des staatstheaters darmstadt, statisterie des staatstheater darmstadt</div>
+                            </div>
                         </div>
                         <div class="credits with-sticky-text">*photos copyright nils heck*</div>
                     </div>
@@ -449,6 +505,17 @@ w/ far too many drag performers to all name, patrick mason, dancers of ndt, etc.
                             <img class="content-image" src="./websitepics/IMG_9419.jpg" alt="You Are Not installation photo 3">
                             <img class="content-image" src="./websitepics/cassandre_performance_2.webp" alt="You Are Not installation photo 4">
                             <img class="content-image" src="./websitepics/NDT_performance_2.webp" alt="You Are Not installation photo 5">
+                            <div class="mobile-text-card">
+                                <div class="mobile-text-content right-align">you are not what you say i am
+immersive interdisciplinary installation
+milkshake festival 2019 x pornceptual
+concept, direction and video: lars marcel braun
+choreography: lars marcel braun in collaboration with all artists
+set: victor labarthe d'arnoux
+lights: michiel knoop
+vj: zoey vero
+w/ far too many drag performers to all name, patrick mason, dancers of ndt, etc.</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -471,6 +538,16 @@ w/ all drag performers in attendance and guests of the festival</div>
                             <img class="content-image" src="websitepics/milkshake-16.webp" alt="Slagroom installation photo 3">
                             <img class="content-image" src="./websitepics/milkshake-18.webp" alt="Slagroom installation photo 4">
                             <img class="content-image" src="./websitepics/milkshake-5.webp" alt="Slagroom installation photo 6">
+                            <div class="mobile-text-card">
+                                <div class="mobile-text-content">slagroom
+interactive installation
+milkshake festival 2018 x pornceptual
+concept, direction and video: lars marcel braun
+set: victor labarthe d'arnoux
+lights: marijn hubgretse
+vj: zoey vero
+w/ all drag performers in attendance and guests of the festival</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -509,6 +586,21 @@ w/ all drag performers in attendance and guests of the festival</div>
                             <img class="content-image" src="./websitepics/humanoid_ohp_04242_FotoSebastianHoppe.jpg" alt="Humanoid production photo 7">
                             <img class="content-image" src="./websitepics/humanoid_ohp_04631_FotoSebastianHoppe.jpg" alt="Humanoid production photo 8">
                             <iframe class="content-image" src="https://www.youtube.com/embed/HPpQgKOiwak?si=bCGk0XFLG5mZTA5k" title="Humanoid trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                            <div class="mobile-text-card">
+                                <div class="mobile-text-content">humanoid
+sci-fi oper by leonard evers with a libretto by pamela dürr (2018)
+semperoper dresden
+premiere 13.6.25
+conductor: chloé dufresne
+director: lars marcel braun
+video: janic bebi
+set: victor labarthe d'arnoux
+costumes: selina tholl
+dramaturgy: martin lühr
+lights: marco dietzel
+
+w/ sofia savenko, dominika škrabalova, jongwoo hong, gerrit illenberger, johannes wieners, ks andreas scheibner, komparserie der semperoper</div>
+                            </div>
                         </div>
                         <div class="credits with-sticky-text">*photos copyright sebastian hoppe*</div>
                     </div>
