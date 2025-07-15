@@ -234,12 +234,6 @@
             border-radius: 4px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            background-color: #f5f5f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 12px;
         }
 
         .content-image:hover {
@@ -281,26 +275,6 @@
 
         .credits.with-sticky-text {
             margin-top: 20px;
-        }
-
-        .image-placeholder {
-            width: 100%;
-            height: 400px;
-            background-color: #f5f5f5;
-            border: 2px dashed #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #888;
-            font-size: 12px;
-            border-radius: 4px;
-            margin-bottom: 0;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-        }
-
-        .image-gallery.with-sticky-text .image-placeholder {
-            min-height: 80vh;
         }
 
         /* Mobile responsive styles */
@@ -375,7 +349,7 @@
             }
 
             /* Mobile: Full-screen images */
-            .image-placeholder {
+            .content-image {
                 width: 100%;
                 height: 60vh;
                 margin-bottom: 0;
@@ -383,9 +357,10 @@
                 scroll-snap-stop: always;
                 border-radius: 0;
                 box-shadow: none;
+                object-fit: cover;
             }
 
-            .image-gallery.with-sticky-text .image-placeholder {
+            .image-gallery.with-sticky-text .content-image {
                 width: 100%;
                 height: 60vh;
                 margin-bottom: 0;
@@ -394,6 +369,19 @@
                 border-radius: 0;
                 box-shadow: none;
                 min-height: 60vh;
+                object-fit: cover;
+            }
+
+            /* Mobile video styling */
+            .image-gallery.with-sticky-text iframe {
+                width: 100%;
+                height: 60vh;
+                min-height: 60vh;
+                margin-bottom: 0;
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                border-radius: 0;
+                box-shadow: none;
             }
 
             /* Mobile: Text as final "image" in gallery */
@@ -544,6 +532,7 @@ w/ ana caseiro, ellen rose kelly, felix heuser, johannes wieners, harald hierony
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_025.jpg" alt="Geschichte production photo 5">
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_012.jpg" alt="Geschichte production photo 6">
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_027.jpg" alt="Geschichte production photo 7">
+                            <div class="mobile-text-card">
                                 <div class="mobile-text-content right-align">geschichte
 operetta a capella by oscar strasnoy, based on fragments from witold gombrowicz (2003)
 oper graz
@@ -578,7 +567,7 @@ dramaturgy: isabelle becker
 w/ hila baggio, cathrin lange, solgerd isalv, ingrid katzengruber, andres agudelo, matthew vickers, aluda todua, julian orlishausen, michael pegher, marco mondragón, david pichlmaier, jared ice, opernchor des staatstheaters darmstadt, statisterie des staatstheater darmstadt</div>
                     <div>
                         <div class="image-gallery with-sticky-text">
-                               <img class="content-image" src="./websitepics/traviata1.jpg" alt="La Traviata production photo 1">
+                            <img class="content-image" src="./websitepics/traviata1.jpg" alt="La Traviata production photo 1">
                             <img class="content-image" src="./websitepics/traviata2.jpg" alt="La Traviata production photo 2">
                             <img class="content-image" src="websitepics/traviata3.jpg" alt="La Traviata production photo 4">
                             <img class="content-image" src="websitepics/traviata4.jpg" alt="La Traviata production photo 5">
@@ -762,7 +751,8 @@ w/ sofia savenko, dominika škrabalova, jongwoo hong, gerrit illenberger, johann
                 if (!isMobileView()) return;
 
                 const scrollTop = gallery.scrollTop;
-                const imageHeight = gallery.querySelector('.image-placeholder')?.offsetHeight || 0;
+                const firstImage = gallery.querySelector('.content-image');
+                const imageHeight = firstImage ? firstImage.offsetHeight : 0;
                 
                 // Show overlay after scrolling past first image (when second image is visible)
                 if (scrollTop > imageHeight * 0.5) {
