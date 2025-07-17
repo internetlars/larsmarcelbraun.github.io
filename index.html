@@ -173,26 +173,8 @@
             margin-bottom: 0; /* Remove margin to prevent hints */
         }
 
-        /* Video/iframe specific styling - make them smaller and more proportional */
-        .image-gallery.with-sticky-text iframe {
-            width: 100%;
-            height: 315px; /* Standard 16:9 aspect ratio for 560px width */
-            min-height: 315px; /* Override the large min-height for images */
-            object-fit: contain;
-            border: none;
-            display: block;
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-            border-radius: 4px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            flex-shrink: 0;
-            margin-bottom: 0;
-        }
-
         .image-gallery.with-sticky-text::-webkit-scrollbar {
-            width: 0px;
-            background: transparent;
+            width: 6px;
         }
 
         .image-gallery.with-sticky-text::-webkit-scrollbar-track {
@@ -200,27 +182,12 @@
         }
 
         .image-gallery.with-sticky-text::-webkit-scrollbar-thumb {
-            background: transparent;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
         }
 
         .image-gallery.with-sticky-text::-webkit-scrollbar-thumb:hover {
-            background: transparent;
-        }
-
-        /* Hide scrollbars for all scrollable elements */
-        .content-area::-webkit-scrollbar,
-        .sidebar::-webkit-scrollbar,
-        .image-gallery::-webkit-scrollbar {
-            width: 0px;
-            background: transparent;
-        }
-
-        /* For Firefox */
-        .content-area,
-        .sidebar,
-        .image-gallery,
-        .image-gallery.with-sticky-text {
-            scrollbar-width: none;
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .content-image {
@@ -277,6 +244,11 @@
             margin-top: 20px;
         }
 
+        /* Mobile parallax content text overlay */
+        .mobile-parallax-text {
+            display: none;
+        }
+
         /* Mobile responsive styles */
         @media screen and (max-width: 768px) {
             .container {
@@ -289,45 +261,97 @@
                 left: 0;
                 top: 0;
                 width: 100%;
-                height: 40vh;
+                height: 50vh;
                 background-color: white;
                 z-index: 1000;
-                overflow-y: hidden;
+                overflow-y: auto;
                 border-bottom: 1px solid #eee;
+                transition: transform 0.3s ease;
+            }
+
+            .sidebar.hidden {
+                transform: translateY(-100%);
             }
 
             .content-area {
                 margin-left: 0;
-                margin-top: 40vh;
+                margin-top: 50vh;
                 width: 100%;
-                height: 60vh;
+                height: 50vh;
                 overflow-y: auto;
+                position: relative;
+            }
+
+            /* Mobile parallax content text overlay */
+            .mobile-parallax-text {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 50vh;
+                background-color: white;
+                z-index: 1001;
+                border-bottom: 1px solid #eee;
+                overflow-y: auto;
+                transition: opacity 0.3s ease;
+                opacity: 0;
+                padding: 0;
+            }
+
+            .mobile-parallax-text.visible {
+                display: block;
+                opacity: 1;
+            }
+
+            .mobile-parallax-text .content-text {
+                padding: 20px;
+                line-height: 1.4;
+                white-space: pre-line;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100%;
+                box-sizing: border-box;
+                font-size: 14px;
+                font-family: 'Times New Roman', serif;
+            }
+
+            .mobile-parallax-text .content-text.right-align {
+                text-align: right;
+            }
+
+            /* Better text alignment for mobile parallax */
+            .mobile-parallax-text .content-text {
+                padding: 20px;
+                line-height: 1.4;
+                white-space: pre-line;
+                text-align: center;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100%;
+                box-sizing: border-box;
+                font-size: 14px;
+                font-family: 'Times New Roman', serif;
+            }
+
+            .mobile-parallax-text .content-text.right-align {
+                text-align: right;
+                justify-content: flex-end;
             }
 
             /* Mobile: Only show active section */
             .content-section {
                 display: none;
-                padding: 20px;
+                padding: 0;
                 min-height: 100%;
                 position: relative;
             }
 
             .content-section.active {
                 display: block;
-            }
-
-            /* Mobile: Image gallery sections should have no padding for edge-to-edge images */
-            .content-section:has(.image-gallery) {
-                padding: 0;
-            }
-
-            /* Alternative selector for better browser support */
-            .content-section .content-with-images {
-                margin: -20px;
-            }
-
-            .content-section:not(:has(.content-with-images)) .content-text {
-                padding: 0;
             }
 
             /* Mobile: Full-screen image gallery */
@@ -338,121 +362,46 @@
                 overflow-y: auto;
                 scroll-snap-type: y mandatory;
                 scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
             }
 
             .image-gallery.with-sticky-text {
-                margin: -20px -20px 0 -20px;
-                height: 100%;
-                overflow-y: auto;
+                margin: 0;
+                height: 50vh;
+                overflow-y: scroll;
                 scroll-snap-type: y mandatory;
+                scroll-behavior: smooth;
                 padding: 0;
+                -webkit-overflow-scrolling: touch;
             }
 
             /* Mobile: Full-screen images */
             .content-image {
                 width: 100%;
-                height: 60vh;
+                height: 50vh;
+                object-fit: cover;
                 margin-bottom: 0;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
                 border-radius: 0;
                 box-shadow: none;
-                object-fit: cover;
             }
 
             .image-gallery.with-sticky-text .content-image {
                 width: 100%;
-                height: 60vh;
-                margin-bottom: 0;
-                scroll-snap-align: start;
-                scroll-snap-stop: always;
-                border-radius: 0;
-                box-shadow: none;
-                min-height: 60vh;
+                height: 50vh;
                 object-fit: cover;
-            }
-
-            /* Mobile video styling */
-            .image-gallery.with-sticky-text iframe {
-                width: 100%;
-                height: 60vh;
-                min-height: 60vh;
                 margin-bottom: 0;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
                 border-radius: 0;
                 box-shadow: none;
-            }
-
-            /* Mobile: Text as final "image" in gallery */
-            .mobile-text-card {
-                width: 100%;
-                height: 60vh;
-                background-color: white;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 30px;
-                box-sizing: border-box;
-                scroll-snap-align: start;
-                scroll-snap-stop: always;
-                border-top: 1px solid #eee;
-            }
-
-            /* Mobile sidebar overlay for content text */
-            .mobile-sidebar-overlay {
-                position: fixed;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 40vh;
-                background-color: rgba(255, 255, 255, 0.95);
-                z-index: 1001;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 30px;
-                box-sizing: border-box;
-                backdrop-filter: blur(10px);
-                border-bottom: 1px solid #eee;
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.3s ease;
-            }
-
-            .mobile-sidebar-overlay.active {
-                opacity: 1;
-                pointer-events: auto;
-            }
-
-            .mobile-sidebar-text {
-                text-align: center;
-                line-height: 1.4;
-                white-space: pre-line;
-                font-size: 12px;
-                max-height: 100%;
-                overflow-y: auto;
-                padding: 0 15px;
-            }
-
-            .mobile-sidebar-text.right-align {
-                text-align: right;
-            }
-
-            .mobile-text-content {
-                text-align: center;
-                line-height: 1.4;
-                white-space: pre-line;
-                padding: 0 15px;
-            }
-
-            .mobile-text-content.right-align {
-                text-align: right;
+                flex-shrink: 0;
             }
 
             /* Mobile: Hide desktop text */
             .content-text.sticky {
-                display: none;
+                display: none !important;
             }
 
             /* Mobile: Remove image reorganization */
@@ -495,13 +444,8 @@
             </ul>
         </nav>
 
-        <!-- Mobile sidebar overlay for content text -->
-        <div class="mobile-sidebar-overlay" id="mobile-sidebar-overlay">
-            <div class="mobile-sidebar-text" id="mobile-sidebar-text"></div>
-        </div>
-
         <main class="content-area">
-            <div class="content-section active" id="lars-marcel-braun" data-section-title="lars marcel braun">
+            <div class="content-section" id="lars-marcel-braun" data-section-title="lars marcel braun">
                 <div class="content-text">Lars Marcel Braun (*1994 in Aachen; raised in Seoul, Oakland and Lexington) is a stage director working across opera, theatre, and visual arts. To finance his studies in physics, musicology, and Slavic literature in Zurich, he found work as an extra at the opera — an experience that exposed him to theatre and sparked his path into directing. After several internships and assistantships, he was appointed staff director at the Komische Oper Berlin from 2014 to 2017, personally invited by Barrie Kosky. Since then, he has worked as a freelance assistant and associate at major theatres across Europe. His practice has been shaped by collaborations with mentors including David Alden, Andreas Homoki, Eva-Maria Höckmayr, Jan-Philipp Gloger, Kirill Serebrennikov, Ted Huffmann, and Nanine Linning.
 
 His own artistic projects include a series of immersive installations at Milkshake Festival in Amsterdam, blending nightlife aesthetics with theatrical interventions with drag performers. Recent works include acclaimed debuts at Semperoper Dresden and Oper Graz. The upcoming season is highlighted by a world premiere in Graz during steirischer herbst and his first opera buffa at Oldenburgisches Staatstheater.
@@ -532,19 +476,6 @@ w/ ana caseiro, ellen rose kelly, felix heuser, johannes wieners, harald hierony
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_025.jpg" alt="Geschichte production photo 5">
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_012.jpg" alt="Geschichte production photo 6">
                             <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_027.jpg" alt="Geschichte production photo 7">
-                            <div class="mobile-text-card">
-                                <div class="mobile-text-content right-align">geschichte
-operetta a capella by oscar strasnoy, based on fragments from witold gombrowicz (2003)
-oper graz
-premiere 25.4.23
-director: lars marcel braun
-set & costumes: victor labarthe d'arnoux
-lights: daniel weiss
-dramaturgy: dorothee harpain
-w/ ana caseiro, ellen rose kelly, felix heuser, johannes wieners, harald hieronymus hein
-
-(video upon request)</div>
-                            </div>
                         </div>
                         <div class="credits with-sticky-text">*photos copyright werner kmetitsch*</div>
                     </div>
@@ -572,20 +503,6 @@ w/ hila baggio, cathrin lange, solgerd isalv, ingrid katzengruber, andres agudel
                             <img class="content-image" src="websitepics/traviata3.jpg" alt="La Traviata production photo 4">
                             <img class="content-image" src="websitepics/traviata4.jpg" alt="La Traviata production photo 5">
                             <img class="content-image" src="websitepics/traviata5.jpg" alt="La Traviata production photo 6">
-                            <div class="mobile-text-card">
-                                <div class="mobile-text-content">la traviata
-opera in three acts by giuseppe verdi
-staatstheater darmstadt
-premiere 28.1.23
-conductor: daniel cohen
-director: karsten wiegand
-associate director: lars marcel braun
-costumes: alfred mayerhofer
-choreo: otto pichler
-dramaturgy: isabelle becker
-
-w/ hila baggio, cathrin lange, solgerd isalv, ingrid katzengruber, andres agudelo, matthew vickers, aluda todua, julian orlishausen, michael pegher, marco mondragón, david pichlmaier, jared ice, opernchor des staatstheaters darmstadt, statisterie des staatstheater darmstadt</div>
-                            </div>
                         </div>
                         <div class="credits with-sticky-text">*photos copyright nils heck*</div>
                     </div>
@@ -610,17 +527,6 @@ w/ far too many drag performers to all name, patrick mason, dancers of ndt, etc.
                             <img class="content-image" src="./websitepics/IMG_9419.jpg" alt="You Are Not installation photo 3">
                             <img class="content-image" src="./websitepics/cassandre_performance_2.webp" alt="You Are Not installation photo 4">
                             <img class="content-image" src="./websitepics/NDT_performance_2.webp" alt="You Are Not installation photo 5">
-                            <div class="mobile-text-card">
-                                <div class="mobile-text-content right-align">you are not what you say i am
-immersive interdisciplinary installation
-milkshake festival 2019 x pornceptual
-concept, direction and video: lars marcel braun
-choreography: lars marcel braun in collaboration with all artists
-set: victor labarthe d'arnoux
-lights: michiel knoop
-vj: zoey vero
-w/ far too many drag performers to all name, patrick mason, dancers of ndt, etc.</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -643,16 +549,6 @@ w/ all drag performers in attendance and guests of the festival</div>
                             <img class="content-image" src="websitepics/milkshake-16.webp" alt="Slagroom installation photo 3">
                             <img class="content-image" src="./websitepics/milkshake-18.webp" alt="Slagroom installation photo 4">
                             <img class="content-image" src="./websitepics/milkshake-5.webp" alt="Slagroom installation photo 6">
-                            <div class="mobile-text-card">
-                                <div class="mobile-text-content">slagroom
-interactive installation
-milkshake festival 2018 x pornceptual
-concept, direction and video: lars marcel braun
-set: victor labarthe d'arnoux
-lights: marijn hubgretse
-vj: zoey vero
-w/ all drag performers in attendance and guests of the festival</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -691,21 +587,6 @@ w/ all drag performers in attendance and guests of the festival</div>
                             <img class="content-image" src="./websitepics/humanoid_ohp_04242_FotoSebastianHoppe.jpg" alt="Humanoid production photo 7">
                             <img class="content-image" src="./websitepics/humanoid_ohp_04631_FotoSebastianHoppe.jpg" alt="Humanoid production photo 8">
                             <iframe class="content-image" src="https://www.youtube.com/embed/HPpQgKOiwak?si=bCGk0XFLG5mZTA5k" title="Humanoid trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                            <div class="mobile-text-card">
-                                <div class="mobile-text-content">humanoid
-sci-fi oper by leonard evers with a libretto by pamela dürr (2018)
-semperoper dresden
-premiere 13.6.25
-conductor: chloé dufresne
-director: lars marcel braun
-video: janic bebi
-set: victor labarthe d'arnoux
-costumes: selina tholl
-dramaturgy: martin lühr
-lights: marco dietzel
-
-w/ sofia savenko, dominika škrabalova, jongwoo hong, gerrit illenberger, johannes wieners, ks andreas scheibner, komparserie der semperoper</div>
-                            </div>
                         </div>
                         <div class="credits with-sticky-text">*photos copyright sebastian hoppe*</div>
                     </div>
@@ -738,29 +619,52 @@ w/ sofia savenko, dominika škrabalova, jongwoo hong, gerrit illenberger, johann
         document.addEventListener('DOMContentLoaded', function() {
             const navItems = document.querySelectorAll('.nav-item');
             const contentSections = document.querySelectorAll('.content-section');
-            const mobileOverlay = document.getElementById('mobile-sidebar-overlay');
-            const mobileOverlayText = document.getElementById('mobile-sidebar-text');
+            const sidebar = document.querySelector('.sidebar');
+            let parallaxTextOverlay = null;
 
-            // Check if we're in mobile view
-            function isMobileView() {
+            // Create mobile parallax text overlay
+            function createParallaxTextOverlay() {
+                if (parallaxTextOverlay) return;
+                
+                parallaxTextOverlay = document.createElement('div');
+                parallaxTextOverlay.className = 'mobile-parallax-text';
+                document.body.appendChild(parallaxTextOverlay);
+            }
+
+            // Check if mobile
+            function isMobile() {
                 return window.innerWidth <= 768;
             }
 
-            // Handle mobile scroll for sidebar overlay
-            function handleMobileScroll(gallery, contentText) {
-                if (!isMobileView()) return;
+            // Handle scroll for mobile parallax effect
+            function handleMobileParallax(imageGallery, contentText) {
+                if (!isMobile() || !imageGallery || !contentText) return;
 
-                const scrollTop = gallery.scrollTop;
-                const firstImage = gallery.querySelector('.content-image');
-                const imageHeight = firstImage ? firstImage.offsetHeight : 0;
+                const images = imageGallery.querySelectorAll('.content-image, iframe');
+                if (images.length < 2) return;
+
+                const scrollTop = imageGallery.scrollTop;
+                const imageHeight = window.innerHeight * 0.5; // 50vh
                 
-                // Show overlay after scrolling past first image (when second image is visible)
-                if (scrollTop > imageHeight * 0.5) {
-                    mobileOverlay.classList.add('active');
-                    mobileOverlayText.textContent = contentText.textContent;
-                    mobileOverlayText.className = 'mobile-sidebar-text' + (contentText.classList.contains('right-align') ? ' right-align' : '');
+                // Calculate which image is currently in view
+                const currentImageIndex = Math.floor(scrollTop / imageHeight);
+                
+                // If we're on the second image or beyond, show content text
+                if (currentImageIndex >= 1) {
+                    // Hide sidebar, show content text
+                    sidebar.classList.add('hidden');
+                    if (parallaxTextOverlay) {
+                        const isRightAlign = contentText.classList.contains('right-align');
+                        const textClass = isRightAlign ? 'content-text right-align' : 'content-text';
+                        parallaxTextOverlay.innerHTML = '<div class="' + textClass + '">' + contentText.innerHTML + '</div>';
+                        parallaxTextOverlay.classList.add('visible');
+                    }
                 } else {
-                    mobileOverlay.classList.remove('active');
+                    // Show sidebar, hide content text
+                    sidebar.classList.remove('hidden');
+                    if (parallaxTextOverlay) {
+                        parallaxTextOverlay.classList.remove('visible');
+                    }
                 }
             }
 
@@ -778,7 +682,14 @@ w/ sofia savenko, dominika škrabalova, jongwoo hong, gerrit illenberger, johann
                         // Toggle off: remove active class and hide section
                         this.classList.remove('active');
                         targetSection.classList.remove('active');
-                        mobileOverlay.classList.remove('active');
+                        
+                        // Reset mobile parallax
+                        if (isMobile()) {
+                            sidebar.classList.remove('hidden');
+                            if (parallaxTextOverlay) {
+                                parallaxTextOverlay.classList.remove('visible');
+                            }
+                        }
                     } else {
                         // Remove active class from all nav items and content sections
                         navItems.forEach(nav => nav.classList.remove('active'));
@@ -793,31 +704,48 @@ w/ sofia savenko, dominika škrabalova, jongwoo hong, gerrit illenberger, johann
                         if (imageGallery) {
                             imageGallery.scrollTop = 0;
                             
-                            // Set up mobile scroll listener
-                            const contentText = targetSection.querySelector('.content-text.sticky');
-                            if (contentText && isMobileView()) {
-                                // Remove existing listeners
-                                imageGallery.removeEventListener('scroll', imageGallery.mobileScrollHandler);
+                            // Set up mobile parallax if needed
+                            if (isMobile()) {
+                                createParallaxTextOverlay();
+                                const contentText = targetSection.querySelector('.content-text.sticky');
+                                if (contentText) {
+                                    // Remove existing scroll listener
+                                    if (imageGallery.parallaxHandler) {
+                                        imageGallery.removeEventListener('scroll', imageGallery.parallaxHandler);
+                                    }
+                                    
+                                    // Add new scroll listener
+                                    imageGallery.parallaxHandler = function(e) {
+                                        handleMobileParallax(imageGallery, contentText);
+                                    };
+                                    imageGallery.addEventListener('scroll', imageGallery.parallaxHandler, { passive: true });
+                                    
+                                    // Test the parallax immediately
+                                    handleMobileParallax(imageGallery, contentText);
+                                }
                                 
-                                // Add new listener
-                                imageGallery.mobileScrollHandler = () => handleMobileScroll(imageGallery, contentText);
-                                imageGallery.addEventListener('scroll', imageGallery.mobileScrollHandler);
+                                // Reset mobile parallax state
+                                sidebar.classList.remove('hidden');
+                                if (parallaxTextOverlay) {
+                                    parallaxTextOverlay.classList.remove('visible');
+                                }
                             }
                         }
                         
                         // Scroll to top of content area
                         document.querySelector('.content-area').scrollTop = 0;
-                        
-                        // Hide mobile overlay initially
-                        mobileOverlay.classList.remove('active');
                     }
                 });
             });
 
             // Handle window resize
             window.addEventListener('resize', function() {
-                if (!isMobileView()) {
-                    mobileOverlay.classList.remove('active');
+                if (!isMobile()) {
+                    // Reset mobile parallax on desktop
+                    sidebar.classList.remove('hidden');
+                    if (parallaxTextOverlay) {
+                        parallaxTextOverlay.classList.remove('visible');
+                    }
                 }
             });
         });
