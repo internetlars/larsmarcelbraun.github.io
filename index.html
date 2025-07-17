@@ -249,6 +249,17 @@
             display: none;
         }
 
+        /* Desktop: Hide mobile elements */
+        @media screen and (min-width: 769px) {
+            .mobile-parallax-text {
+                display: none !important;
+            }
+            
+            .mobile-text-card {
+                display: none !important;
+            }
+        }
+
         /* Mobile responsive styles */
         @media screen and (max-width: 768px) {
             .container {
@@ -379,7 +390,7 @@
             .content-image {
                 width: 100%;
                 height: 50vh;
-                object-fit: cover;
+                object-fit: contain;
                 margin-bottom: 0;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
@@ -390,7 +401,7 @@
             .image-gallery.with-sticky-text .content-image {
                 width: 100%;
                 height: 50vh;
-                object-fit: cover;
+                object-fit: contain;
                 margin-bottom: 0;
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
@@ -621,6 +632,15 @@ w/ all drag performers in attendance and guests of the festival</div>
             const contentSections = document.querySelectorAll('.content-section');
             const sidebar = document.querySelector('.sidebar');
             let parallaxTextOverlay = null;
+
+            // Ensure all sections are hidden on page load
+            contentSections.forEach(section => section.classList.remove('active'));
+            navItems.forEach(item => item.classList.remove('active'));
+
+            // Ensure sidebar is visible on desktop
+            if (!isMobile()) {
+                sidebar.classList.remove('hidden');
+            }
 
             // Create mobile parallax text overlay
             function createParallaxTextOverlay() {
