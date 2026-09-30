@@ -329,8 +329,8 @@ iframe {
         display: block;
         width: 100%;
         max-width: none;
-        height: calc(100% - 7dvh);
-        margin: 7dvh 0 0 0;
+        height: 100%;
+        margin: 0;
         padding: 0;
         overflow-x: hidden;
         overflow-y: auto;
@@ -349,7 +349,7 @@ iframe {
         margin: 0;
         padding: 0;
         object-fit: contain;
-        object-position: center center;
+        object-position: center 72%;
         border: 0;
         border-radius: 0;
         box-shadow: none;
@@ -459,10 +459,13 @@ iframe {
     }
 
     #email .content-text, #instagram .content-text {
+        display: block;
         width: 100%;
         max-width: none;
         margin: 0;
         padding: 20px;
+        opacity: 1;
+        visibility: visible;
     }
 }
 
@@ -1095,6 +1098,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             /* Open selected section */
 
+            /* Clear any project-text overlay left by the previous section. */
+            showNavigation();
+
             this.classList.add('active');
             targetSection.classList.add('active');
 
@@ -1141,6 +1147,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     targetSection.scrollTop = 0;
                     targetSection.scrollTo({ top: 0, left: 0, behavior: 'auto' });
                 });
+
+                /* iOS can restore a nested scroller after layout; reset once more after paint. */
+                setTimeout(function () {
+                    targetSection.scrollTop = 0;
+                }, 60);
 
                 showNavigation();
             }
