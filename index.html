@@ -284,6 +284,10 @@ iframe {
         visibility: hidden;
     }
 
+    .desktop-nav-gap {
+        display: none;
+    }
+
     /* BOTTOM HALF */
 
     .content-area {
@@ -351,7 +355,6 @@ iframe {
         -webkit-overflow-scrolling: touch;
         scroll-snap-type: y mandatory;
         scroll-behavior: auto;
-        overscroll-behavior-y: contain;
     }
 
     .image-gallery.with-sticky-text .content-image {
@@ -368,7 +371,6 @@ iframe {
         border-radius: 0;
         box-shadow: none;
         scroll-snap-align: start;
-        scroll-snap-stop: always;
         flex: none;
     }
 
@@ -382,7 +384,6 @@ iframe {
         padding: 0;
         border: 0;
         scroll-snap-align: start;
-        scroll-snap-stop: always;
     }
 
     .content-image:hover {
@@ -438,7 +439,12 @@ iframe {
         display: none;
     }
 
-    /* BIO */
+    /* =====================================================
+       BIO
+
+       Text occupies the first lower-half frame.
+       Portrait occupies the second lower-half frame.
+       ===================================================== */
 
     #lars-marcel-braun {
         width: 100%;
@@ -449,20 +455,18 @@ iframe {
         overflow-y: auto;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
-        scroll-snap-type: y mandatory;
     }
 
     #lars-marcel-braun > .content-text {
         display: block;
         width: 100%;
         max-width: none;
-        min-height: 100%;
         height: auto;
+        min-height: 0;
         margin: 0;
         padding: 20px;
         box-sizing: border-box;
         line-height: 1.3;
-        scroll-snap-align: start;
     }
 
     #lars-marcel-braun > .image-gallery {
@@ -474,8 +478,6 @@ iframe {
         margin: 0;
         padding: 0;
         overflow: hidden;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
     }
 
     #lars-marcel-braun .content-image.portrait {
@@ -518,6 +520,7 @@ iframe {
 </style>
 </head>
 
+
 <body>
 
 <div class="container">
@@ -527,19 +530,20 @@ iframe {
 
 <li class="nav-item" data-target="lars-marcel-braun">lars marcel braun ✧.*</li>
 <li class="nav-item" data-target="nachhall">nachhall</li>
+<li class="nav-item" data-target="il-barbiere">il barbiere di siviglia</li>
+<li class="nav-item" data-target="das-schlaue-füchslein">das schlaue füchslein</li>
 <li class="nav-item" data-target="humanoid">humanoid</li>
 <li class="nav-item" data-target="geschichte">geschichte</li>
+<li class="nav-item" data-target="tancredi">tancredi</li>
 <li class="nav-item" data-target="la-traviata">la traviata</li>
 <li class="nav-item" data-target="you-are-not">you are not what you say i am</li>
 <li class="nav-item" data-target="slagroom">slagroom</li>
-<li class="nav-item" data-target="das-schlaue-füchslein">das schlaue füchslein</li>
-<li class="nav-item" data-target="il-barbiere">il barbiere di siviglia</li>
-<li class="nav-item" data-target="tancredi">tancredi</li>
 <li class="nav-item" data-target="email">email</li>
 <li class="nav-item" data-target="instagram">instagram</li>
 
 </ul>
 </nav>
+
 
 <main class="content-area">
 
@@ -840,12 +844,11 @@ Detmolder Schloss Spatzen</div>
 
 <img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_001.jpg">
 <img class="content-image" src="./websitepics/DasSchlauFuchs_FotoJQ_209.jpg">
+<img class="content-image" src="./websitepics/fuechslein-reviews-01.png">
 <img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_226.jpg">
 <img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_182.jpg">
-<img class="content-image" src="./websitepics/DasSchlauFuchs_FotoJQ_283.jpg">
-
-<img class="content-image" src="./websitepics/fuechslein-reviews-01.png">
 <img class="content-image" src="./websitepics/fuechslein-reviews-02.png">
+<img class="content-image" src="./websitepics/DasSchlauFuchs_FotoJQ_283.jpg">
 
 </div>
 
@@ -881,16 +884,15 @@ w/ aksel daveyan, penelope kendros, chanhee cho, leilei xie, seungweon lee, arth
 <img class="content-image" src="./websitepics/DSC03137.jpg">
 <img class="content-image" src="./websitepics/DSC02645.jpg">
 <img class="content-image" src="./websitepics/DSC02706.jpg">
+<img class="content-image" src="./websitepics/barbiere-review-nwz.png">
 <img class="content-image" src="./websitepics/DSC02765.jpg">
 <img class="content-image" src="./websitepics/DSC02790.jpg">
 <img class="content-image" src="./websitepics/DSC02873.jpg">
 <img class="content-image" src="./websitepics/DSC03249.jpg">
+<img class="content-image" src="./websitepics/barbiere-review-nmz.png">
 <img class="content-image" src="./websitepics/DSC03254.jpg">
 <img class="content-image" src="./websitepics/DSC03324.jpg">
 <img class="content-image" src="./websitepics/DSC03410.jpg">
-
-<img class="content-image" src="./websitepics/barbiere-review-nwz.png">
-<img class="content-image" src="./websitepics/barbiere-review-nmz.png">
 
 </div>
 
@@ -930,12 +932,11 @@ w/ adriana bastidas gamboa, giuliana gianfaldoni, dmitry ivanchey, gabriele sago
 
 <img class="content-image" src="./websitepics/tancredi-01.webp">
 <img class="content-image" src="./websitepics/tancredi-02.webp">
+<img class="content-image" src="./websitepics/tancredi-review-opernfreund.png">
 <img class="content-image" src="./websitepics/tancredi-03.webp">
 <img class="content-image" src="./websitepics/tancredi-04.webp">
-<img class="content-image" src="./websitepics/tancredi-05.webp">
-
-<img class="content-image" src="./websitepics/tancredi-review-opernfreund.png">
 <img class="content-image" src="./websitepics/tancredi-review-opernmagazin.png">
+<img class="content-image" src="./websitepics/tancredi-05.webp">
 
 </div>
 
