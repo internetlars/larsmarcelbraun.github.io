@@ -340,34 +340,31 @@ iframe {
         display: none !important;
     }
 
-    /* PROJECT GALLERY — iOS FIX */
+    /* PROJECT GALLERY — MOBILE — CONTROLLED SWIPE */
 
     .image-gallery.with-sticky-text {
         display: block;
+        position: relative;
         width: 100%;
         max-width: none;
-        height: 50vh;
-        height: 50dvh;
+        height: 100%;
+        min-height: 0;
         margin: 0;
         padding: 0;
-        overflow-x: hidden;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: none;
-        scroll-padding: 0;
-        scroll-behavior: auto;
-        overscroll-behavior-y: contain;
+        overflow: hidden;
+        touch-action: pan-x;
     }
 
     .image-gallery.with-sticky-text .content-image {
+        animation: none !important;
+        opacity: 1 !important;
+        position: absolute;
+        inset: 0;
         display: block;
         width: 100%;
-        height: 50vh;
-        height: 50dvh;
-        min-height: 50vh;
-        min-height: 50dvh;
-        max-height: 50vh;
-        max-height: 50dvh;
+        height: 100%;
+        min-height: 0;
+        max-height: none;
         margin: 0;
         padding: 0;
         object-fit: contain;
@@ -375,23 +372,25 @@ iframe {
         border: 0;
         border-radius: 0;
         box-shadow: none;
-        scroll-snap-align: none;
-        flex: none;
+        transition: transform 260ms ease;
+        will-change: transform;
     }
 
     .image-gallery.with-sticky-text iframe.content-image {
+        animation: none !important;
+        opacity: 1 !important;
+        position: absolute;
+        inset: 0;
         display: block;
         width: 100%;
-        height: 50vh;
-        height: 50dvh;
-        min-height: 50vh;
-        min-height: 50dvh;
-        max-height: 50vh;
-        max-height: 50dvh;
+        height: 100%;
+        min-height: 0;
+        max-height: none;
         margin: 0;
         padding: 0;
         border: 0;
-        scroll-snap-align: none;
+        transition: transform 260ms ease;
+        will-change: transform;
     }
 
     /* PROJECT INFORMATION — TOP HALF */
@@ -461,7 +460,7 @@ iframe {
     }
 
     #lars-marcel-braun > .content-text {
-        display: block;
+        display: none;
         width: 100%;
         max-width: none;
         height: auto;
@@ -995,7 +994,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.querySelector('.sidebar');
 
     let mobileTextOverlay = null;
-    const mobileGalleryState = new WeakMap();
 
 
     function isMobile() {
@@ -1065,122 +1063,72 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    /* WATCH PROJECT GALLERY SCROLL */
+    /* MOBILE PROJECT SWIPE — ONE IMAGE AT A TIME */
 
-    function setupGalleryObserver(gallery, contentText) {
+    function setupMobileGallery(gallery, contentText) {
 
-        if (!gallery || !contentText) {
-            return;
-        }
+        if (!gallery || !contentText) return;
 
-        const oldState = mobileGalleryState.get(gallery);
+        const slides = Array.from(gallery.querySelectorAll('.content-image'));
+        if (!slides.length) return;
 
-        if (oldState) {
-            gallery.removeEventListener('scroll', oldState.onScroll);
-            gallery.removeEventListener('touchstart', oldState.onTouchStart);
-            gallery.removeEventListener('touchend', oldState.onTouchEnd);
-            gallery.removeEventListener('touchcancel', oldState.onTouchEnd);
-            clearTimeout(oldState.scrollTimer);
-        }
+        let index = 0;
+        let startY = 0;
+        let startX = 0;
+        let tracking = false;
 
-        const state = {
-            touching: false,
-            settling: false,
-            scrollTimer: null
-        };
-
-        function slideHeight() {
-            return gallery.clientHeight;
-        }
-
-        function nearestSlide() {
-            const h = slideHeight();
-            if (!h) return 0;
-
-            const slides = gallery.querySelectorAll('.content-image');
-            const maxIndex = Math.max(0, slides.length - 1);
-
-            return Math.max(
-                0,
-                Math.min(maxIndex, Math.round(gallery.scrollTop / h))
-            );
-        }
-
-        function updateTopHalf() {
-            const h = slideHeight();
-            if (!h) return;
-
-            if (gallery.scrollTop > h * 0.5) {
-                showProjectText(contentText);
-            } else {
-                showNavigation();
-            }
-        }
-
-        function settleGallery() {
-            if (!isMobile() || state.touching || state.settling) {
-                return;
-            }
-
-            const h = slideHeight();
-            if (!h) return;
-
-            const target = nearestSlide() * h;
-
-            if (Math.abs(gallery.scrollTop - target) < 2) {
-                gallery.scrollTop = target;
-                updateTopHalf();
-                return;
-            }
-
-            state.settling = true;
-
-            gallery.scrollTo({
-                top: target,
-                behavior: 'smooth'
+        function render(animate) {
+            slides.forEach(function (slide, i) {
+                slide.style.transition = animate ? 'transform 260ms ease' : 'none';
+                slide.style.transform = 'translate3d(0,' + ((i - index) * 100) + '%,0)';
             });
 
-            window.setTimeout(function () {
-                gallery.scrollTop = target;
-                state.settling = false;
-                updateTopHalf();
-            }, 260);
-        }
-
-        function scheduleSettle() {
-            clearTimeout(state.scrollTimer);
-
-            state.scrollTimer = window.setTimeout(function () {
-                settleGallery();
-            }, 90);
-        }
-
-        state.onScroll = function () {
-            if (!isMobile()) return;
-
-            updateTopHalf();
-
-            if (!state.touching && !state.settling) {
-                scheduleSettle();
+            if (index === 0) {
+                showNavigation();
+            } else {
+                showProjectText(contentText);
             }
+        }
+
+        gallery.resetMobileGallery = function () {
+            index = 0;
+            render(false);
         };
 
-        state.onTouchStart = function () {
-            state.touching = true;
-            clearTimeout(state.scrollTimer);
+        if (gallery.mobileTouchStart) {
+            gallery.removeEventListener('touchstart', gallery.mobileTouchStart);
+            gallery.removeEventListener('touchend', gallery.mobileTouchEnd);
+        }
+
+        gallery.mobileTouchStart = function (event) {
+            if (!isMobile() || !event.touches.length) return;
+            startY = event.touches[0].clientY;
+            startX = event.touches[0].clientX;
+            tracking = true;
         };
 
-        state.onTouchEnd = function () {
-            state.touching = false;
-            scheduleSettle();
+        gallery.mobileTouchEnd = function (event) {
+            if (!isMobile() || !tracking || !event.changedTouches.length) return;
+            tracking = false;
+
+            const dy = event.changedTouches[0].clientY - startY;
+            const dx = event.changedTouches[0].clientX - startX;
+
+            if (Math.abs(dy) < 35 || Math.abs(dy) < Math.abs(dx)) {
+                render(true);
+                return;
+            }
+
+            if (dy < 0 && index < slides.length - 1) index += 1;
+            if (dy > 0 && index > 0) index -= 1;
+
+            render(true);
         };
 
-        gallery.addEventListener('scroll', state.onScroll, { passive: true });
-        gallery.addEventListener('touchstart', state.onTouchStart, { passive: true });
-        gallery.addEventListener('touchend', state.onTouchEnd, { passive: true });
-        gallery.addEventListener('touchcancel', state.onTouchEnd, { passive: true });
+        gallery.addEventListener('touchstart', gallery.mobileTouchStart, { passive: true });
+        gallery.addEventListener('touchend', gallery.mobileTouchEnd, { passive: true });
 
-        mobileGalleryState.set(gallery, state);
+        render(false);
     }
 
 
@@ -1243,8 +1191,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (gallery) {
 
-                gallery.scrollTop = 0;
-
                 if (isMobile()) {
 
                     createMobileTextOverlay();
@@ -1254,12 +1200,15 @@ document.addEventListener('DOMContentLoaded', function () {
                             '.content-text.sticky'
                         );
 
-                    setupGalleryObserver(
-                        gallery,
-                        contentText
-                    );
+                    setupMobileGallery(gallery, contentText);
+
+                    if (gallery.resetMobileGallery) {
+                        gallery.resetMobileGallery();
+                    }
 
                     showNavigation();
+                } else {
+                    gallery.scrollTop = 0;
                 }
             }
 
@@ -1270,7 +1219,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 targetSection.scrollTop = 0;
 
-                showNavigation();
+                if (isMobile()) {
+                    createMobileTextOverlay();
+                    const bioText = targetSection.querySelector(':scope > .content-text');
+                    showProjectText(bioText);
+                } else {
+                    showNavigation();
+                }
             }
 
         });
