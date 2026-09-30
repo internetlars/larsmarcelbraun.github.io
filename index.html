@@ -253,38 +253,35 @@ iframe {
     body {
         width: 100%;
         height: 100%;
+        margin: 0;
         overflow: hidden;
     }
 
-    body {
-        position: fixed;
-        inset: 0;
-    }
-
     /*
-       ONE screen divided into two real halves.
-       dvh follows Safari's visible viewport.
-    */
+     * The whole visible iPhone screen.
+     * Top half = navigation/info
+     * Bottom half = photographs
+     */
     .container {
-        display: grid;
-        grid-template-rows: 50% 50%;
-
+        display: block;
         width: 100%;
         height: 100vh;
         height: 100dvh;
     }
 
 
-    /* TOP HALF */
+    /* ================================
+       TOP HALF
+       ================================ */
 
     .sidebar {
-        position: relative;
-        left: auto;
-        top: auto;
+        position: fixed;
+        top: 0;
+        left: 0;
 
         width: 100%;
-        height: 100%;
-        min-height: 0;
+        height: 50vh;
+        height: 50dvh;
 
         background: white;
 
@@ -294,6 +291,8 @@ iframe {
         border-bottom: 1px solid #eee;
 
         z-index: 1000;
+
+        transition: none;
     }
 
     .sidebar.hidden {
@@ -301,18 +300,24 @@ iframe {
     }
 
 
-    /* BOTTOM HALF */
+    /* ================================
+       BOTTOM HALF
+       ================================ */
 
     .content-area {
-        margin: 0;
+        position: fixed;
+
+        top: 50vh;
+        top: 50dvh;
+        left: 0;
 
         width: 100%;
-        height: 100%;
-        min-height: 0;
+        height: 50vh;
+        height: 50dvh;
+
+        margin: 0;
 
         overflow: hidden;
-
-        position: relative;
     }
 
     .content-section {
@@ -320,13 +325,11 @@ iframe {
 
         width: 100%;
         height: 100%;
-        min-height: 0;
 
+        margin: 0;
         padding: 0;
 
         overflow: hidden;
-
-        position: relative;
     }
 
     .content-section.active {
@@ -338,32 +341,27 @@ iframe {
 
         width: 100%;
         height: 100%;
-        min-height: 0;
 
         margin: 0;
         padding: 0;
     }
 
 
-    /*
-       THE IMPORTANT PART:
-
-       The gallery itself is exactly the size
-       of the bottom half.
-    */
+    /* ================================
+       PROJECT GALLERY
+       ================================ */
 
     .image-gallery.with-sticky-text {
+        display: block;
+
         width: 100%;
         max-width: none;
 
-        height: 100%;
-        min-height: 0;
+        height: 50vh;
+        height: 50dvh;
 
         margin: 0;
         padding: 0;
-
-        display: flex;
-        flex-direction: column;
 
         overflow-x: hidden;
         overflow-y: scroll;
@@ -371,35 +369,39 @@ iframe {
         -webkit-overflow-scrolling: touch;
 
         scroll-snap-type: y mandatory;
-        scroll-behavior: smooth;
+        scroll-behavior: auto;
 
         overscroll-behavior-y: contain;
     }
 
 
     /*
-       EACH IMAGE = EXACTLY ONE BOTTOM FRAME
+     * Each production photograph gets exactly
+     * one lower-half viewport.
+     *
+     * NO FLEXBOX.
+     * NO calculated percentage height.
+     */
 
-       This is what creates the "locking"
-       behaviour.
-    */
+    .image-gallery.with-sticky-text .content-image {
+        display: block;
 
-    .image-gallery.with-sticky-text > .content-image {
         width: 100%;
 
-        height: 100%;
-        min-height: 100%;
-        max-height: 100%;
+        height: 50vh;
+        height: 50dvh;
 
-        flex: 0 0 100%;
+        min-height: 50vh;
+        min-height: 50dvh;
 
-        object-fit: contain;
-        object-position: center;
-
-        display: block;
+        max-height: 50vh;
+        max-height: 50dvh;
 
         margin: 0;
         padding: 0;
+
+        object-fit: contain;
+        object-position: center;
 
         border: 0;
         border-radius: 0;
@@ -407,22 +409,33 @@ iframe {
 
         scroll-snap-align: start;
         scroll-snap-stop: always;
+
+        flex: none;
     }
 
 
-    .image-gallery.with-sticky-text > iframe.content-image {
+    /* Videos behave like photographs */
+
+    .image-gallery.with-sticky-text iframe.content-image {
+        display: block;
+
         width: 100%;
 
-        height: 100%;
-        min-height: 100%;
-        max-height: 100%;
+        height: 50vh;
+        height: 50dvh;
 
-        flex: 0 0 100%;
+        min-height: 50vh;
+        min-height: 50dvh;
+
+        max-height: 50vh;
+        max-height: 50dvh;
+
+        margin: 0;
+
+        border: 0;
 
         scroll-snap-align: start;
         scroll-snap-stop: always;
-
-        border: 0;
     }
 
 
@@ -432,14 +445,16 @@ iframe {
     }
 
 
-    /* Hide desktop project text */
+    /* Hide desktop project information */
 
     .content-text.sticky {
         display: none !important;
     }
 
 
-    /* PROJECT INFORMATION IN TOP HALF */
+    /* ================================
+       PROJECT INFORMATION
+       ================================ */
 
     .mobile-parallax-text {
         display: none;
@@ -456,43 +471,39 @@ iframe {
 
         background: white;
 
-        border-bottom: 1px solid #eee;
-
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
 
-        z-index: 1001;
+        border-bottom: 1px solid #eee;
 
-        opacity: 0;
+        z-index: 1001;
     }
 
     .mobile-parallax-text.visible {
         display: block;
-        opacity: 1;
     }
 
     .mobile-parallax-text .content-text {
-        width: 100%;
-        max-width: none;
+        display: flex;
 
+        width: 100%;
         min-height: 100%;
 
         margin: 0;
         padding: 20px;
 
-        box-sizing: border-box;
-
-        line-height: 1.4;
-        white-space: pre-line;
-
-        text-align: center;
-
-        display: flex;
         align-items: center;
         justify-content: center;
 
+        box-sizing: border-box;
+
         font-family: 'Times New Roman', serif;
         font-size: 14px;
+        line-height: 1.4;
+
+        white-space: pre-line;
+
+        text-align: center;
     }
 
     .mobile-parallax-text .content-text.right-align {
@@ -501,55 +512,73 @@ iframe {
     }
 
 
-    /* PHOTO CREDITS */
+    /* ================================
+       CREDITS
+       ================================ */
 
     .credits.with-sticky-text {
-        position: absolute;
-
-        right: 10px;
-        bottom: 10px;
-
-        margin: 0;
-
-        padding: 5px 10px;
-
-        background: rgba(255,255,255,0.9);
-
-        font-size: 10px;
-
-        z-index: 10;
+        display: none;
     }
 
 
-    /* BIO */
+    /* ================================
+       BIO
+
+       Bio is different from projects.
+       It needs to be freely scrollable so
+       both the text AND portrait are visible.
+       ================================ */
 
     #lars-marcel-braun {
+        width: 100%;
+        height: 50vh;
+        height: 50dvh;
+
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+
+        padding: 0;
     }
 
     #lars-marcel-braun > .content-text {
-        padding: 20px;
-        margin: 0;
+        display: block;
 
-        height: auto;
-        max-width: none;
-    }
-
-    #lars-marcel-braun > .image-gallery {
         width: 100%;
         max-width: none;
 
         height: auto;
 
         margin: 0;
+        padding: 20px;
+
+        box-sizing: border-box;
+    }
+
+    #lars-marcel-braun > .image-gallery {
+        display: block;
+
+        width: 100%;
+        max-width: none;
+
+        height: auto;
+
+        margin: 0;
+        padding: 0;
+
+        overflow: visible;
     }
 
     #lars-marcel-braun .content-image.portrait {
+        display: block;
+
         width: 100%;
         max-width: 100%;
 
         height: auto;
         min-height: 0;
+        max-height: none;
+
+        margin: 0;
 
         object-fit: contain;
 
@@ -557,13 +586,28 @@ iframe {
         box-shadow: none;
     }
 
+    #lars-marcel-braun .credits {
+        display: block;
 
-    /* EMAIL / INSTAGRAM */
+        margin: 10px 20px 20px 20px;
+
+        font-size: 10px;
+    }
+
+
+    /* ================================
+       EMAIL / INSTAGRAM
+       ================================ */
+
+    #email,
+    #instagram {
+        overflow-y: auto;
+    }
 
     #email .content-text,
     #instagram .content-text {
-        padding: 20px;
         margin: 0;
+        padding: 20px;
     }
 }
 
@@ -1409,63 +1453,7 @@ document.addEventListener('DOMContentLoaded', function() {
        Re-align to the nearest photograph.
     */
 
-    window.addEventListener(
-        'resize',
-        function() {
-
-
-            if (!isMobile()) {
-
-                resetMobileTop();
-
-                return;
-            }
-
-
-            const activeSection =
-                document.querySelector(
-                    '.content-section.active'
-                );
-
-
-            if (!activeSection) {
-                return;
-            }
-
-
-            const gallery =
-                activeSection.querySelector(
-                    '.image-gallery.with-sticky-text'
-                );
-
-
-            if (!gallery) {
-                return;
-            }
-
-
-            const frameHeight =
-                gallery.clientHeight;
-
-
-            if (!frameHeight) {
-                return;
-            }
-
-
-            const currentImage =
-                Math.round(
-                    gallery.scrollTop /
-                    frameHeight
-                );
-
-
-            gallery.scrollTop =
-                currentImage *
-                frameHeight;
-
-        }
-    );
+    
 
 });
 
