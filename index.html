@@ -248,9 +248,7 @@ iframe {
    ========================================================= */
 
 @media screen and (max-width: 768px) {
-
-    html,
-    body {
+    html, body {
         width: 100%;
         height: 100%;
         margin: 0;
@@ -264,8 +262,7 @@ iframe {
         height: 100dvh;
     }
 
-    /* TOP HALF */
-
+    /* TOP HALF: NAVIGATION */
     .sidebar {
         position: fixed;
         top: 0;
@@ -280,16 +277,10 @@ iframe {
         z-index: 100;
     }
 
-    .sidebar.hidden {
-        visibility: hidden;
-    }
+    .sidebar.hidden { visibility: hidden; }
+    .desktop-nav-gap { display: none; }
 
-    .desktop-nav-gap {
-        display: none;
-    }
-
-    /* BOTTOM HALF */
-
+    /* BOTTOM HALF: ALL CONTENT */
     .content-area {
         position: fixed;
         left: 0;
@@ -311,12 +302,9 @@ iframe {
         overflow: hidden;
     }
 
-    .content-section.active {
-        display: block;
-    }
+    .content-section.active { display: block; }
 
-    /* PROJECT STRUCTURE */
-
+    /* PROJECTS */
     .content-with-images {
         display: block;
         width: 100%;
@@ -327,7 +315,6 @@ iframe {
     }
 
     .content-with-images > div:not(.content-text) {
-        position: relative;
         width: 100%;
         height: 100%;
         min-height: 0;
@@ -336,38 +323,29 @@ iframe {
         overflow: hidden;
     }
 
-    .content-text.sticky {
-        display: none !important;
-    }
-
-    /* PROJECT GALLERY — iOS FIX */
+    .content-text.sticky { display: none !important; }
 
     .image-gallery.with-sticky-text {
         display: block;
         width: 100%;
         max-width: none;
-        height: 50vh;
-        height: 50dvh;
+        height: 100%;
         margin: 0;
         padding: 0;
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         scroll-snap-type: y mandatory;
-        scroll-padding: 0;
         scroll-behavior: auto;
-        overscroll-behavior-y: contain;
     }
 
-    .image-gallery.with-sticky-text .content-image {
+    .image-gallery.with-sticky-text .content-image,
+    .image-gallery.with-sticky-text iframe.content-image {
         display: block;
         width: 100%;
-        height: 50vh;
-        height: 50dvh;
-        min-height: 50vh;
-        min-height: 50dvh;
-        max-height: 50vh;
-        max-height: 50dvh;
+        height: 100%;
+        min-height: 100%;
+        max-height: 100%;
         margin: 0;
         padding: 0;
         object-fit: contain;
@@ -376,28 +354,10 @@ iframe {
         border-radius: 0;
         box-shadow: none;
         scroll-snap-align: start;
-        scroll-snap-stop: always;
         flex: none;
     }
 
-    .image-gallery.with-sticky-text iframe.content-image {
-        display: block;
-        width: 100%;
-        height: 50vh;
-        height: 50dvh;
-        min-height: 50vh;
-        min-height: 50dvh;
-        max-height: 50vh;
-        max-height: 50dvh;
-        margin: 0;
-        padding: 0;
-        border: 0;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-    }
-
-    /* PROJECT INFORMATION — TOP HALF */
-
+    /* PROJECT INFORMATION IN TOP HALF AFTER FIRST IMAGE */
     .mobile-parallax-text {
         display: none;
         position: fixed;
@@ -415,19 +375,15 @@ iframe {
         z-index: 200;
     }
 
-    .mobile-parallax-text.visible {
-        display: block;
-    }
+    .mobile-parallax-text.visible { display: block; }
 
     .mobile-parallax-text .content-text {
-        display: flex;
+        display: block;
         width: 100%;
         min-height: 100%;
         margin: 0;
         padding: 20px;
         box-sizing: border-box;
-        align-items: center;
-        justify-content: center;
         font-family: 'Times New Roman', serif;
         font-size: 14px;
         line-height: 1.3;
@@ -435,31 +391,21 @@ iframe {
         text-align: center;
     }
 
-    .mobile-parallax-text .content-text.right-align {
-        text-align: right;
-        justify-content: flex-end;
-    }
+    .mobile-parallax-text .content-text.right-align { text-align: right; }
+    .credits.with-sticky-text { display: none; }
 
-    .credits.with-sticky-text {
-        display: none;
-    }
-
-    /* =====================================================
-       BIO
-
-       Text occupies the first lower-half frame.
-       Portrait occupies the second lower-half frame.
-       ===================================================== */
-
+    /* BIO: ONE ORDINARY SCROLLING DOCUMENT IN THE BOTTOM HALF.
+       Text first; portrait follows naturally underneath. */
     #lars-marcel-braun {
         width: 100%;
         height: 100%;
         min-height: 0;
         margin: 0;
         padding: 0;
-        overflow-y: auto;
         overflow-x: hidden;
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
     }
 
     #lars-marcel-braun > .content-text {
@@ -472,49 +418,47 @@ iframe {
         padding: 20px;
         box-sizing: border-box;
         line-height: 1.3;
+        white-space: pre-line;
+        text-align: left;
     }
 
     #lars-marcel-braun > .image-gallery {
         display: block;
         width: 100%;
         max-width: none;
-        height: 100%;
-        min-height: 100%;
+        height: auto;
+        min-height: 0;
         margin: 0;
         padding: 0;
-        overflow: hidden;
+        overflow: visible;
     }
 
     #lars-marcel-braun .content-image.portrait {
         display: block;
         width: 100%;
-        height: 100%;
-        min-height: 100%;
-        max-height: 100%;
+        height: auto;
+        min-height: 0;
+        max-height: none;
         margin: 0;
         padding: 0;
         object-fit: contain;
-        object-position: center center;
         border: 0;
         border-radius: 0;
         box-shadow: none;
     }
 
     #lars-marcel-braun .credits {
-        display: none;
+        display: block;
+        margin: 10px 20px 20px;
     }
 
-    /* EMAIL / INSTAGRAM */
-
-    #email,
-    #instagram {
+    #email, #instagram {
         width: 100%;
         height: 100%;
         overflow-y: auto;
     }
 
-    #email .content-text,
-    #instagram .content-text {
+    #email .content-text, #instagram .content-text {
         width: 100%;
         max-width: none;
         margin: 0;
