@@ -340,32 +340,34 @@ iframe {
         display: none !important;
     }
 
-    /* PROJECT GALLERY — MOBILE — CONTROLLED SWIPE */
+    /* PROJECT GALLERY — iOS FIX */
 
     .image-gallery.with-sticky-text {
         display: block;
-        position: relative;
         width: 100%;
         max-width: none;
-        height: 100%;
-        min-height: 0;
+        height: 50vh;
+        height: 50dvh;
         margin: 0;
         padding: 0;
-        overflow: hidden;
-        touch-action: pan-x;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        scroll-snap-type: y mandatory;
+        scroll-padding: 0;
+        scroll-behavior: auto;
+        overscroll-behavior-y: contain;
     }
 
     .image-gallery.with-sticky-text .content-image {
-        animation: none !important;
-        opacity: 1 !important;
-        position: absolute;
-        left: 0;
-        top: 20%;
         display: block;
         width: 100%;
-        height: 80%;
-        min-height: 0;
-        max-height: none;
+        height: 50vh;
+        height: 50dvh;
+        min-height: 50vh;
+        min-height: 50dvh;
+        max-height: 50vh;
+        max-height: 50dvh;
         margin: 0;
         padding: 0;
         object-fit: contain;
@@ -373,26 +375,25 @@ iframe {
         border: 0;
         border-radius: 0;
         box-shadow: none;
-        transition: transform 260ms ease;
-        will-change: transform;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+        flex: none;
     }
 
     .image-gallery.with-sticky-text iframe.content-image {
-        animation: none !important;
-        opacity: 1 !important;
-        position: absolute;
-        left: 0;
-        top: 20%;
         display: block;
         width: 100%;
-        height: 80%;
-        min-height: 0;
-        max-height: none;
+        height: 50vh;
+        height: 50dvh;
+        min-height: 50vh;
+        min-height: 50dvh;
+        max-height: 50vh;
+        max-height: 50dvh;
         margin: 0;
         padding: 0;
         border: 0;
-        transition: transform 260ms ease;
-        will-change: transform;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
     }
 
     /* PROJECT INFORMATION — TOP HALF */
@@ -419,12 +420,14 @@ iframe {
     }
 
     .mobile-parallax-text .content-text {
-        display: block;
+        display: flex;
         width: 100%;
         min-height: 100%;
         margin: 0;
         padding: 20px;
         box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
         font-family: 'Times New Roman', serif;
         font-size: 14px;
         line-height: 1.3;
@@ -434,6 +437,7 @@ iframe {
 
     .mobile-parallax-text .content-text.right-align {
         text-align: right;
+        justify-content: flex-end;
     }
 
     .credits.with-sticky-text {
@@ -448,58 +452,45 @@ iframe {
        ===================================================== */
 
     #lars-marcel-braun {
-        display: block;
         width: 100%;
         height: 100%;
         min-height: 0;
         margin: 0;
         padding: 0;
-        overflow-x: hidden !important;
-        overflow-y: scroll !important;
+        overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
-        touch-action: pan-y;
-        overscroll-behavior-y: contain;
     }
 
     #lars-marcel-braun > .content-text {
         display: block;
-        position: static;
         width: 100%;
         max-width: none;
         height: auto;
-        min-height: auto;
+        min-height: 0;
         margin: 0;
         padding: 20px;
         box-sizing: border-box;
         line-height: 1.3;
-        white-space: pre-line;
-        text-align: left;
-        overflow: visible;
     }
 
     #lars-marcel-braun > .image-gallery {
         display: block;
-        position: static;
         width: 100%;
         max-width: none;
-        height: 50vh;
-        height: 50dvh;
-        min-height: 50vh;
-        min-height: 50dvh;
+        height: 100%;
+        min-height: 100%;
         margin: 0;
         padding: 0;
         overflow: hidden;
     }
 
     #lars-marcel-braun .content-image.portrait {
-        animation: none !important;
-        opacity: 1 !important;
         display: block;
-        position: static;
         width: 100%;
         height: 100%;
-        min-height: 0;
-        max-height: none;
+        min-height: 100%;
+        max-height: 100%;
         margin: 0;
         padding: 0;
         object-fit: contain;
@@ -507,7 +498,6 @@ iframe {
         border: 0;
         border-radius: 0;
         box-shadow: none;
-        transform: none !important;
     }
 
     #lars-marcel-braun .credits {
@@ -1076,74 +1066,42 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    /* WATCH PROJECT GALLERY SCROLL */
 
+    function setupGalleryObserver(gallery, contentText) {
 
-    /* MOBILE PROJECT SWIPE — ONE IMAGE AT A TIME */
-
-    function setupMobileGallery(gallery, contentText) {
-
-        if (!gallery || !contentText) return;
-
-        const slides = Array.from(gallery.querySelectorAll('.content-image'));
-        if (!slides.length) return;
-
-        let index = 0;
-        let startY = 0;
-        let startX = 0;
-        let tracking = false;
-
-        function render(animate) {
-            slides.forEach(function (slide, i) {
-                slide.style.transition = animate ? 'transform 260ms ease' : 'none';
-                slide.style.transform = 'translate3d(0,' + ((i - index) * 100) + '%,0)';
-            });
-
-            if (index === 0) {
-                showNavigation();
-            } else {
-                showProjectText(contentText);
-            }
+        if (!gallery || !contentText) {
+            return;
         }
 
-        gallery.resetMobileGallery = function () {
-            index = 0;
-            render(false);
-        };
-
-        if (gallery.mobileTouchStart) {
-            gallery.removeEventListener('touchstart', gallery.mobileTouchStart);
-            gallery.removeEventListener('touchend', gallery.mobileTouchEnd);
+        if (gallery.mobileScrollHandler) {
+            gallery.removeEventListener(
+                'scroll',
+                gallery.mobileScrollHandler
+            );
         }
 
-        gallery.mobileTouchStart = function (event) {
-            if (!isMobile() || !event.touches.length) return;
-            startY = event.touches[0].clientY;
-            startX = event.touches[0].clientX;
-            tracking = true;
-        };
+        gallery.mobileScrollHandler = function () {
 
-        gallery.mobileTouchEnd = function (event) {
-            if (!isMobile() || !tracking || !event.changedTouches.length) return;
-            tracking = false;
-
-            const dy = event.changedTouches[0].clientY - startY;
-            const dx = event.changedTouches[0].clientX - startX;
-
-            if (Math.abs(dy) < 35 || Math.abs(dy) < Math.abs(dx)) {
-                render(true);
+            if (!isMobile()) {
                 return;
             }
 
-            if (dy < 0 && index < slides.length - 1) index += 1;
-            if (dy > 0 && index > 0) index -= 1;
+            const threshold =
+                gallery.clientHeight * 0.5;
 
-            render(true);
+            if (gallery.scrollTop > threshold) {
+                showProjectText(contentText);
+            } else {
+                showNavigation();
+            }
         };
 
-        gallery.addEventListener('touchstart', gallery.mobileTouchStart, { passive: true });
-        gallery.addEventListener('touchend', gallery.mobileTouchEnd, { passive: true });
-
-        render(false);
+        gallery.addEventListener(
+            'scroll',
+            gallery.mobileScrollHandler,
+            { passive: true }
+        );
     }
 
 
@@ -1206,6 +1164,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (gallery) {
 
+                gallery.scrollTop = 0;
+
                 if (isMobile()) {
 
                     createMobileTextOverlay();
@@ -1215,15 +1175,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             '.content-text.sticky'
                         );
 
-                    setupMobileGallery(gallery, contentText);
-
-                    if (gallery.resetMobileGallery) {
-                        gallery.resetMobileGallery();
-                    }
+                    setupGalleryObserver(
+                        gallery,
+                        contentText
+                    );
 
                     showNavigation();
-                } else {
-                    gallery.scrollTop = 0;
                 }
             }
 
@@ -1233,6 +1190,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (target === 'lars-marcel-braun') {
 
                 targetSection.scrollTop = 0;
+
                 showNavigation();
             }
 
