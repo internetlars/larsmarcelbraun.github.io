@@ -257,11 +257,6 @@ iframe {
         overflow: hidden;
     }
 
-    /*
-     * The whole visible iPhone screen.
-     * Top half = navigation/info
-     * Bottom half = photographs
-     */
     .container {
         display: block;
         width: 100%;
@@ -269,66 +264,42 @@ iframe {
         height: 100dvh;
     }
 
-
-    /* ================================
-       TOP HALF
-       ================================ */
-
     .sidebar {
         position: fixed;
         top: 0;
         left: 0;
-
         width: 100%;
         height: 50vh;
         height: 50dvh;
-
         background: white;
-
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-
         border-bottom: 1px solid #eee;
-
-        z-index: 1000;
-
-        transition: none;
+        z-index: 100;
     }
 
     .sidebar.hidden {
         visibility: hidden;
     }
 
-
-    /* ================================
-       BOTTOM HALF
-       ================================ */
-
     .content-area {
         position: fixed;
-
-        top: 50vh;
-        top: 50dvh;
         left: 0;
-
+        bottom: 0;
         width: 100%;
         height: 50vh;
         height: 50dvh;
-
         margin: 0;
-
         overflow: hidden;
     }
 
     .content-section {
         display: none;
-
         width: 100%;
         height: 100%;
-
+        min-height: 0;
         margin: 0;
         padding: 0;
-
         overflow: hidden;
     }
 
@@ -338,145 +309,91 @@ iframe {
 
     .content-with-images {
         display: block;
-
         width: 100%;
         height: 100%;
-
+        min-height: 0;
         margin: 0;
         padding: 0;
     }
 
+    .content-with-images > div:not(.content-text) {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
 
-    /* ================================
-       PROJECT GALLERY
-       ================================ */
+    .content-text.sticky {
+        display: none !important;
+    }
 
     .image-gallery.with-sticky-text {
         display: block;
-
         width: 100%;
         max-width: none;
-
-        height: 50vh;
-        height: 50dvh;
-
+        height: 100%;
+        min-height: 0;
         margin: 0;
         padding: 0;
-
         overflow-x: hidden;
-        overflow-y: scroll;
-
+        overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-
         scroll-snap-type: y mandatory;
         scroll-behavior: auto;
-
-        overscroll-behavior-y: contain;
     }
-
-
-    /*
-     * Each production photograph gets exactly
-     * one lower-half viewport.
-     *
-     * NO FLEXBOX.
-     * NO calculated percentage height.
-     */
 
     .image-gallery.with-sticky-text .content-image {
         display: block;
-
         width: 100%;
-
-        height: 50vh;
-        height: 50dvh;
-
-        min-height: 50vh;
-        min-height: 50dvh;
-
-        max-height: 50vh;
-        max-height: 50dvh;
-
+        height: 100%;
+        min-height: 100%;
+        max-height: 100%;
         margin: 0;
         padding: 0;
-
         object-fit: contain;
-        object-position: center;
-
+        object-position: center center;
         border: 0;
         border-radius: 0;
         box-shadow: none;
-
         scroll-snap-align: start;
-        scroll-snap-stop: always;
-
         flex: none;
     }
 
-
-    /* Videos behave like photographs */
-
     .image-gallery.with-sticky-text iframe.content-image {
         display: block;
-
         width: 100%;
-
-        height: 50vh;
-        height: 50dvh;
-
-        min-height: 50vh;
-        min-height: 50dvh;
-
-        max-height: 50vh;
-        max-height: 50dvh;
-
+        height: 100%;
+        min-height: 100%;
+        max-height: 100%;
         margin: 0;
-
+        padding: 0;
         border: 0;
-
         scroll-snap-align: start;
-        scroll-snap-stop: always;
     }
-
 
     .content-image:hover {
         transform: none;
         box-shadow: none;
     }
 
-
-    /* Hide desktop project information */
-
-    .content-text.sticky {
-        display: none !important;
-    }
-
-
-    /* ================================
-       PROJECT INFORMATION
-       ================================ */
-
     .mobile-parallax-text {
         display: none;
-
         position: fixed;
-
         top: 0;
         left: 0;
-
         width: 100%;
-
         height: 50vh;
         height: 50dvh;
-
+        margin: 0;
+        padding: 0;
         background: white;
-
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
-
         border-bottom: 1px solid #eee;
-
-        z-index: 1001;
+        z-index: 200;
     }
 
     .mobile-parallax-text.visible {
@@ -485,24 +402,17 @@ iframe {
 
     .mobile-parallax-text .content-text {
         display: flex;
-
         width: 100%;
         min-height: 100%;
-
         margin: 0;
         padding: 20px;
-
+        box-sizing: border-box;
         align-items: center;
         justify-content: center;
-
-        box-sizing: border-box;
-
         font-family: 'Times New Roman', serif;
         font-size: 14px;
-        line-height: 1.4;
-
+        line-height: 1.3;
         white-space: pre-line;
-
         text-align: center;
     }
 
@@ -511,101 +421,76 @@ iframe {
         justify-content: flex-end;
     }
 
-
-    /* ================================
-       CREDITS
-       ================================ */
-
     .credits.with-sticky-text {
         display: none;
     }
 
-
-    /* ================================
-       BIO
-
-       Bio is different from projects.
-       It needs to be freely scrollable so
-       both the text AND portrait are visible.
-       ================================ */
+    /* BIO */
 
     #lars-marcel-braun {
         width: 100%;
-        height: 50vh;
-        height: 50dvh;
-
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-
+        height: 100%;
+        min-height: 0;
+        margin: 0;
         padding: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
     }
 
     #lars-marcel-braun > .content-text {
         display: block;
-
         width: 100%;
         max-width: none;
-
         height: auto;
-
         margin: 0;
         padding: 20px;
-
         box-sizing: border-box;
+        line-height: 1.3;
     }
 
     #lars-marcel-braun > .image-gallery {
         display: block;
-
         width: 100%;
         max-width: none;
-
         height: auto;
-
         margin: 0;
         padding: 0;
-
         overflow: visible;
     }
 
     #lars-marcel-braun .content-image.portrait {
         display: block;
-
         width: 100%;
         max-width: 100%;
-
         height: auto;
         min-height: 0;
         max-height: none;
-
         margin: 0;
-
+        padding: 0;
         object-fit: contain;
-
+        border: 0;
         border-radius: 0;
         box-shadow: none;
     }
 
     #lars-marcel-braun .credits {
         display: block;
-
         margin: 10px 20px 20px 20px;
-
         font-size: 10px;
     }
 
-
-    /* ================================
-       EMAIL / INSTAGRAM
-       ================================ */
-
     #email,
     #instagram {
+        width: 100%;
+        height: 100%;
         overflow-y: auto;
     }
 
     #email .content-text,
     #instagram .content-text {
+        width: 100%;
+        max-width: none;
         margin: 0;
         padding: 20px;
     }
@@ -666,7 +551,6 @@ alt="Portrait of Lars Marcel Braun">
 </div>
 
 
-
 <!-- NACHHALL -->
 
 <div class="content-section" id="nachhall">
@@ -715,7 +599,6 @@ allowfullscreen>
 </div>
 </div>
 </div>
-
 
 
 <!-- HUMANOID -->
@@ -769,7 +652,6 @@ allowfullscreen>
 </div>
 
 
-
 <!-- GESCHICHTE -->
 
 <div class="content-section" id="geschichte">
@@ -811,7 +693,6 @@ w/ ana caseiro, ellen rose kelly, felix heuser, johannes wieners, valentino blas
 </div>
 
 
-
 <!-- LA TRAVIATA -->
 
 <div class="content-section" id="la-traviata">
@@ -850,7 +731,6 @@ w/ hila baggio, cathrin lange, solgerd isalv, ingrid katzengruber, andres agudel
 </div>
 
 
-
 <!-- YOU ARE NOT -->
 
 <div class="content-section" id="you-are-not">
@@ -884,7 +764,6 @@ w/ far too many drag performers to all name, patrick mason, dancers of ndt, etc.
 </div>
 
 
-
 <!-- SLAGROOM -->
 
 <div class="content-section" id="slagroom">
@@ -915,7 +794,6 @@ w/ all drag performers in attendance and guests of the festival</div>
 </div>
 </div>
 </div>
-
 
 
 <!-- FÜCHSLEIN -->
@@ -961,7 +839,6 @@ Detmolder Schloss Spatzen</div>
 </div>
 
 
-
 <!-- BARBIERE -->
 
 <div class="content-section" id="il-barbiere">
@@ -1003,7 +880,6 @@ w/ aksel daveyan, penelope kendros, chanhee cho, leilei xie, seungweon lee, arth
 </div>
 </div>
 </div>
-
 
 
 <!-- TANCREDI -->
@@ -1048,7 +924,6 @@ w/ adriana bastidas gamboa, giuliana gianfaldoni, dmitry ivanchey, gabriele sago
 </div>
 
 
-
 <!-- EMAIL -->
 
 <div class="content-section" id="email">
@@ -1063,7 +938,6 @@ braun.lars@icloud.com
 
 </div>
 </div>
-
 
 
 <!-- INSTAGRAM -->
@@ -1087,21 +961,14 @@ class="content-link">
 </div>
 
 
-
 <script>
+document.addEventListener('DOMContentLoaded', function () {
 
-document.addEventListener('DOMContentLoaded', function() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const contentSections = document.querySelectorAll('.content-section');
+    const sidebar = document.querySelector('.sidebar');
 
-    const navItems =
-        document.querySelectorAll('.nav-item');
-
-    const contentSections =
-        document.querySelectorAll('.content-section');
-
-    const sidebar =
-        document.querySelector('.sidebar');
-
-    let parallaxTextOverlay = null;
+    let mobileTextOverlay = null;
 
 
     function isMobile() {
@@ -1109,354 +976,197 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    /* INITIAL STATE */
-
-    contentSections.forEach(function(section) {
+    contentSections.forEach(function (section) {
         section.classList.remove('active');
     });
 
-    navItems.forEach(function(item) {
+    navItems.forEach(function (item) {
         item.classList.remove('active');
     });
 
 
-    /* CREATE MOBILE TEXT AREA */
+    function createMobileTextOverlay() {
 
-    function createParallaxTextOverlay() {
-
-        if (parallaxTextOverlay) {
+        if (mobileTextOverlay) {
             return;
         }
 
-        parallaxTextOverlay =
-            document.createElement('div');
+        mobileTextOverlay = document.createElement('div');
+        mobileTextOverlay.className = 'mobile-parallax-text';
 
-        parallaxTextOverlay.className =
-            'mobile-parallax-text';
-
-        document.body.appendChild(
-            parallaxTextOverlay
-        );
+        document.body.appendChild(mobileTextOverlay);
     }
 
 
-    function resetMobileTop() {
+    function showNavigation() {
 
         sidebar.classList.remove('hidden');
 
-        if (parallaxTextOverlay) {
-            parallaxTextOverlay.classList.remove(
-                'visible'
-            );
+        if (mobileTextOverlay) {
+            mobileTextOverlay.classList.remove('visible');
         }
     }
 
 
-    /*
-       MOBILE SCROLL BEHAVIOUR
-    */
+    function showProjectText(contentText) {
 
-    function handleMobileParallax(
-        imageGallery,
-        contentText
-    ) {
-
-        if (
-            !isMobile() ||
-            !imageGallery ||
-            !contentText
-        ) {
+        if (!mobileTextOverlay || !contentText) {
             return;
         }
 
+        const rightAligned =
+            contentText.classList.contains('right-align');
 
-        const images =
-            imageGallery.querySelectorAll(
-                '.content-image'
+        const textClass =
+            rightAligned
+                ? 'content-text right-align'
+                : 'content-text';
+
+        mobileTextOverlay.innerHTML =
+            '<div class="' +
+            textClass +
+            '">' +
+            contentText.innerHTML +
+            '</div>';
+
+        sidebar.classList.add('hidden');
+        mobileTextOverlay.classList.add('visible');
+    }
+
+
+    function setupGalleryObserver(gallery, contentText) {
+
+        if (!gallery || !contentText) {
+            return;
+        }
+
+        if (gallery.mobileScrollHandler) {
+            gallery.removeEventListener(
+                'scroll',
+                gallery.mobileScrollHandler
             );
-
-
-        if (images.length < 2) {
-            return;
         }
 
+        gallery.mobileScrollHandler = function () {
 
-        const frameHeight =
-            imageGallery.clientHeight;
-
-
-        if (!frameHeight) {
-            return;
-        }
-
-
-        const scrollTop =
-            imageGallery.scrollTop;
-
-
-        /*
-           Which snapped image are we on?
-        */
-
-        const currentImageIndex =
-            Math.round(
-                scrollTop / frameHeight
-            );
-
-
-        /*
-           Image 1:
-           navigation upstairs.
-
-           Image 2 onwards:
-           project information upstairs.
-        */
-
-        if (currentImageIndex >= 1) {
-
-            sidebar.classList.add('hidden');
-
-
-            if (parallaxTextOverlay) {
-
-                const rightAligned =
-                    contentText.classList.contains(
-                        'right-align'
-                    );
-
-
-                const textClass =
-                    rightAligned
-                        ? 'content-text right-align'
-                        : 'content-text';
-
-
-                parallaxTextOverlay.innerHTML =
-                    '<div class="' +
-                    textClass +
-                    '">' +
-                    contentText.innerHTML +
-                    '</div>';
-
-
-                parallaxTextOverlay.classList.add(
-                    'visible'
-                );
+            if (!isMobile()) {
+                return;
             }
 
-        } else {
+            const threshold =
+                gallery.clientHeight * 0.5;
 
-            resetMobileTop();
+            if (gallery.scrollTop > threshold) {
+                showProjectText(contentText);
+            } else {
+                showNavigation();
+            }
+        };
 
-        }
+        gallery.addEventListener(
+            'scroll',
+            gallery.mobileScrollHandler,
+            { passive: true }
+        );
     }
 
 
-    /*
-       NAVIGATION
-    */
+    navItems.forEach(function (item) {
 
-    navItems.forEach(function(item) {
+        item.addEventListener('click', function () {
 
-        item.addEventListener(
-            'click',
-            function() {
+            const target =
+                this.getAttribute('data-target');
 
+            const targetSection =
+                document.getElementById(target);
 
-                const target =
-                    this.getAttribute(
-                        'data-target'
-                    );
+            if (!targetSection) {
+                return;
+            }
 
-
-                const targetSection =
-                    document.getElementById(
-                        target
-                    );
+            const alreadyActive =
+                this.classList.contains('active');
 
 
-                if (!targetSection) {
-                    return;
-                }
+            if (alreadyActive) {
+
+                this.classList.remove('active');
+                targetSection.classList.remove('active');
+
+                showNavigation();
+
+                return;
+            }
 
 
-                const alreadyActive =
-                    this.classList.contains(
-                        'active'
-                    );
+            navItems.forEach(function (nav) {
+                nav.classList.remove('active');
+            });
+
+            contentSections.forEach(function (section) {
+                section.classList.remove('active');
+            });
 
 
-                /*
-                   Clicking the selected item
-                   closes the project.
-                */
-
-                if (alreadyActive) {
-
-                    this.classList.remove(
-                        'active'
-                    );
-
-                    targetSection.classList.remove(
-                        'active'
-                    );
+            this.classList.add('active');
+            targetSection.classList.add('active');
 
 
-                    if (isMobile()) {
-                        resetMobileTop();
-                    }
-
-                    return;
-                }
+            const gallery =
+                targetSection.querySelector(
+                    '.image-gallery.with-sticky-text'
+                );
 
 
-                /*
-                   Close everything else.
-                */
+            if (gallery) {
 
-                navItems.forEach(function(nav) {
-                    nav.classList.remove(
-                        'active'
-                    );
-                });
+                gallery.scrollTop = 0;
 
+                if (isMobile()) {
 
-                contentSections.forEach(
-                    function(section) {
+                    createMobileTextOverlay();
 
-                        section.classList.remove(
-                            'active'
+                    const contentText =
+                        targetSection.querySelector(
+                            '.content-text.sticky'
                         );
 
-                    }
-                );
-
-
-                /*
-                   Open selected project.
-                */
-
-                this.classList.add('active');
-
-                targetSection.classList.add(
-                    'active'
-                );
-
-
-                const imageGallery =
-                    targetSection.querySelector(
-                        '.image-gallery.with-sticky-text'
+                    setupGalleryObserver(
+                        gallery,
+                        contentText
                     );
 
-
-                if (imageGallery) {
-
-
-                    /*
-                       Always begin at image 1.
-                    */
-
-                    imageGallery.scrollTop = 0;
-
-
-                    if (isMobile()) {
-
-
-                        createParallaxTextOverlay();
-
-
-                        const contentText =
-                            targetSection.querySelector(
-                                '.content-text.sticky'
-                            );
-
-
-                        if (contentText) {
-
-
-                            /*
-                               Remove old listener.
-                            */
-
-                            if (
-                                imageGallery
-                                    .parallaxHandler
-                            ) {
-
-                                imageGallery
-                                    .removeEventListener(
-                                        'scroll',
-                                        imageGallery
-                                            .parallaxHandler
-                                    );
-                            }
-
-
-                            /*
-                               Create new listener.
-                            */
-
-                            imageGallery
-                                .parallaxHandler =
-                                function() {
-
-                                    handleMobileParallax(
-                                        imageGallery,
-                                        contentText
-                                    );
-
-                                };
-
-
-                            imageGallery
-                                .addEventListener(
-                                    'scroll',
-                                    imageGallery
-                                        .parallaxHandler,
-                                    { passive: true }
-                                );
-
-
-                            handleMobileParallax(
-                                imageGallery,
-                                contentText
-                            );
-                        }
-
-
-                        resetMobileTop();
-                    }
+                    showNavigation();
                 }
-
-
-                const contentArea =
-                    document.querySelector(
-                        '.content-area'
-                    );
-
-
-                if (contentArea) {
-                    contentArea.scrollTop = 0;
-                }
-
             }
-        );
 
+
+            if (target === 'lars-marcel-braun') {
+
+                targetSection.scrollTop = 0;
+
+                showNavigation();
+            }
+
+        });
     });
 
 
-    /*
-       IPHONE VIEWPORT CHANGES
+    window.addEventListener('resize', function () {
 
-       Safari changes visible viewport height
-       when its browser chrome appears/disappears.
-       Re-align to the nearest photograph.
-    */
+        if (!isMobile()) {
 
-    
+            sidebar.classList.remove('hidden');
+
+            if (mobileTextOverlay) {
+                mobileTextOverlay.classList.remove('visible');
+            }
+        }
+
+    });
 
 });
-
 </script>
 
 </body>
