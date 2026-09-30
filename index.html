@@ -359,16 +359,17 @@ iframe {
         animation: none !important;
         opacity: 1 !important;
         position: absolute;
-        inset: 0;
+        left: 0;
+        top: 10%;
         display: block;
         width: 100%;
-        height: 100%;
+        height: 90%;
         min-height: 0;
         max-height: none;
         margin: 0;
         padding: 0;
         object-fit: contain;
-        object-position: center 68%;
+        object-position: center center;
         border: 0;
         border-radius: 0;
         box-shadow: none;
@@ -380,10 +381,11 @@ iframe {
         animation: none !important;
         opacity: 1 !important;
         position: absolute;
-        inset: 0;
+        left: 0;
+        top: 10%;
         display: block;
         width: 100%;
-        height: 100%;
+        height: 90%;
         min-height: 0;
         max-height: none;
         margin: 0;
@@ -434,14 +436,6 @@ iframe {
         text-align: right;
     }
 
-    /* Bio text is ordinary readable prose, not project-title formatting. */
-    .mobile-parallax-text.bio-mode .content-text {
-        text-align: left;
-        white-space: pre-line;
-        min-height: 0;
-        padding: 20px;
-    }
-
     .credits.with-sticky-text {
         display: none;
     }
@@ -465,7 +459,7 @@ iframe {
     }
 
     #lars-marcel-braun > .content-text {
-        display: none;
+        display: block;
         width: 100%;
         max-width: none;
         height: auto;
@@ -1037,7 +1031,6 @@ document.addEventListener('DOMContentLoaded', function () {
         sidebar.classList.remove('hidden');
 
         if (mobileTextOverlay) {
-            mobileTextOverlay.classList.remove('bio-mode');
             mobileTextOverlay.classList.remove('visible');
         }
     }
@@ -1048,8 +1041,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!mobileTextOverlay || !contentText) {
             return;
         }
-
-        mobileTextOverlay.classList.remove('bio-mode');
 
         const rightAligned =
             contentText.classList.contains('right-align');
@@ -1071,20 +1062,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function showBioText(contentText) {
-
-        if (!mobileTextOverlay || !contentText) return;
-
-        mobileTextOverlay.classList.add('bio-mode');
-        mobileTextOverlay.innerHTML =
-            '<div class="content-text">' +
-            contentText.innerHTML +
-            '</div>';
-
-        mobileTextOverlay.scrollTop = 0;
-        sidebar.classList.add('hidden');
-        mobileTextOverlay.classList.add('visible');
-    }
 
 
     /* MOBILE PROJECT SWIPE — ONE IMAGE AT A TIME */
@@ -1242,14 +1219,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (target === 'lars-marcel-braun') {
 
                 targetSection.scrollTop = 0;
-
-                if (isMobile()) {
-                    createMobileTextOverlay();
-                    const bioText = targetSection.querySelector(':scope > .content-text');
-                    showBioText(bioText);
-                } else {
-                    showNavigation();
-                }
+                showNavigation();
             }
 
         });
