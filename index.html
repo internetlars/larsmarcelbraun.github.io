@@ -368,7 +368,7 @@ iframe {
         margin: 0;
         padding: 0;
         object-fit: contain;
-        object-position: center center;
+        object-position: center 68%;
         border: 0;
         border-radius: 0;
         box-shadow: none;
@@ -417,14 +417,12 @@ iframe {
     }
 
     .mobile-parallax-text .content-text {
-        display: flex;
+        display: block;
         width: 100%;
         min-height: 100%;
         margin: 0;
         padding: 20px;
         box-sizing: border-box;
-        align-items: center;
-        justify-content: center;
         font-family: 'Times New Roman', serif;
         font-size: 14px;
         line-height: 1.3;
@@ -434,7 +432,14 @@ iframe {
 
     .mobile-parallax-text .content-text.right-align {
         text-align: right;
-        justify-content: flex-end;
+    }
+
+    /* Bio text is ordinary readable prose, not project-title formatting. */
+    .mobile-parallax-text.bio-mode .content-text {
+        text-align: left;
+        white-space: pre-line;
+        min-height: 0;
+        padding: 20px;
     }
 
     .credits.with-sticky-text {
@@ -1032,6 +1037,7 @@ document.addEventListener('DOMContentLoaded', function () {
         sidebar.classList.remove('hidden');
 
         if (mobileTextOverlay) {
+            mobileTextOverlay.classList.remove('bio-mode');
             mobileTextOverlay.classList.remove('visible');
         }
     }
@@ -1042,6 +1048,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!mobileTextOverlay || !contentText) {
             return;
         }
+
+        mobileTextOverlay.classList.remove('bio-mode');
 
         const rightAligned =
             contentText.classList.contains('right-align');
@@ -1058,6 +1066,22 @@ document.addEventListener('DOMContentLoaded', function () {
             contentText.innerHTML +
             '</div>';
 
+        sidebar.classList.add('hidden');
+        mobileTextOverlay.classList.add('visible');
+    }
+
+
+    function showBioText(contentText) {
+
+        if (!mobileTextOverlay || !contentText) return;
+
+        mobileTextOverlay.classList.add('bio-mode');
+        mobileTextOverlay.innerHTML =
+            '<div class="content-text">' +
+            contentText.innerHTML +
+            '</div>';
+
+        mobileTextOverlay.scrollTop = 0;
         sidebar.classList.add('hidden');
         mobileTextOverlay.classList.add('visible');
     }
@@ -1222,7 +1246,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (isMobile()) {
                     createMobileTextOverlay();
                     const bioText = targetSection.querySelector(':scope > .content-text');
-                    showProjectText(bioText);
+                    showBioText(bioText);
                 } else {
                     showNavigation();
                 }
