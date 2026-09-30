@@ -4,281 +4,250 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>lars marcel braun 라스</title>
-   <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
 
-    html,
-    body {
-        width: 100%;
-        min-height: 100%;
-    }
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    body {
-        font-family: 'Times New Roman', serif;
-        font-size: 14px;
-        background-color: white;
-        color: black;
-        overflow-x: hidden;
-    }
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+}
 
-    .container {
-        display: flex;
-        height: 100vh;
-    }
+body {
+    font-family: 'Times New Roman', serif;
+    font-size: 14px;
+    background-color: white;
+    color: black;
+    overflow-x: hidden;
+}
 
-    .sidebar {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 250px;
-        height: 100vh;
-        background-color: white;
-        z-index: 1000;
-        overflow-y: auto;
-    }
+.container {
+    display: flex;
+    height: 100vh;
+}
 
-    .nav-list {
-        list-style: none;
-        margin: 0;
-        padding: 20px 0;
-    }
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background-color: white;
+    z-index: 1000;
+    overflow-y: auto;
+}
 
-    .nav-item {
-        margin: 0;
-        padding: 2px 20px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-weight: normal;
-    }
+.nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 20px 0;
+}
 
-    .nav-item:hover {
-        text-decoration: underline;
-    }
+.nav-item {
+    margin: 0;
+    padding: 2px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: normal;
+}
 
-    .nav-item.active {
-        text-decoration: underline;
-    }
+.nav-item:hover,
+.nav-item.active {
+    text-decoration: underline;
+}
 
-    .content-area {
-        margin-left: 250px;
-        width: calc(100vw - 250px);
-        min-height: 100vh;
-        position: relative;
-        overflow-y: auto;
-    }
+.content-area {
+    margin-left: 250px;
+    width: calc(100vw - 250px);
+    min-height: 100vh;
+    position: relative;
+    overflow-y: auto;
+}
 
-    .content-section {
-        display: none;
-        padding: 40px;
-        min-height: 100vh;
-    }
+.content-section {
+    display: none;
+    padding: 40px;
+    min-height: 100vh;
+}
 
-    .content-section.active {
-        display: block;
-    }
+.content-section.active {
+    display: block;
+}
 
-    /* Image animation */
 
-    .content-image,
-    iframe {
+/* IMAGE ANIMATION */
+
+.content-image,
+iframe {
+    opacity: 0;
+    transition:
+        opacity 0.8s ease-in-out,
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.content-section.active .content-image,
+.content-section.active iframe {
+    animation: fadeInUp 0.8s ease-in-out 0.3s forwards;
+}
+
+@keyframes fadeInUp {
+    from {
         opacity: 0;
-        transition:
-            opacity 0.8s ease-in-out,
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+        transform: translateY(20px);
     }
 
-    .content-section.active .content-image,
-    .content-section.active iframe {
-        animation: fadeInUp 0.8s ease-in-out 0.3s forwards;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* Desktop project layout */
-
-    .content-with-images {
-        display: flex;
-        gap: 40px;
-        align-items: flex-start;
-        justify-content: center;
-    }
-
-    .content-text {
-        max-width: 600px;
-        margin: 0 0 40px 0;
-        line-height: 1.3;
-        white-space: pre-line;
-        text-align: left;
-    }
-
-    .content-text.right-align {
-        text-align: right;
-        margin: 0 0 40px auto;
-    }
-
-    .content-text.sticky {
-        position: sticky;
-        top: 40px;
-        flex-shrink: 0;
-        width: 280px;
-        margin: 0;
-        order: 2;
-    }
-
-    .content-text.sticky.right-align {
-        text-align: right;
-        margin: 0;
-        order: 2;
-    }
-
-    .image-gallery {
-        margin: 40px 0;
-        display: flex;
-        flex-direction: column;
-        gap: 0;
-        max-width: 600px;
-    }
-
-    .image-gallery.with-sticky-text {
-        margin: 0;
-        flex: 1;
-        max-width: 600px;
-        order: 1;
-        scroll-snap-type: y mandatory;
-        overflow-y: scroll;
-        height: 80vh;
-        padding: 0;
-        box-sizing: border-box;
-        scroll-behavior: smooth;
-    }
-
-    .image-gallery.with-sticky-text .content-image {
-        width: 100%;
-        height: auto;
-        min-height: 80vh;
-        object-fit: contain;
-        border: none;
-        display: block;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-        border-radius: 4px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
-        flex-shrink: 0;
-        margin-bottom: 0;
-    }
-
-    .image-gallery.with-sticky-text::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .image-gallery.with-sticky-text::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    .image-gallery.with-sticky-text::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 3px;
-    }
-
-    .image-gallery.with-sticky-text::-webkit-scrollbar-thumb:hover {
-        background: rgba(0, 0, 0, 0.3);
-    }
-
-    .content-image {
-        width: 100%;
-        height: 400px;
-        object-fit: cover;
-        border: none;
-        display: block;
-        scroll-snap-align: center;
-        scroll-snap-stop: always;
-        border-radius: 4px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition:
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
-    }
-
-    .content-image:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    .content-image.portrait {
-        width: auto;
-        height: auto;
-        max-width: 600px;
-        object-fit: contain;
-        scroll-snap-align: center;
-        scroll-snap-stop: always;
-        border-radius: 4px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-
-    .content-image.portrait:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    }
-
-    .content-link {
-        color: black;
-        text-decoration: none;
-    }
-
-    .content-link:hover {
-        text-decoration: underline;
-    }
-
-    .credits {
-        font-style: italic;
-        margin-top: 20px;
-        font-size: 12px;
-    }
-
-    .credits.with-sticky-text {
-        margin-top: 20px;
-    }
-
-    .mobile-parallax-text {
-        display: none;
-    }
-
-    /* Desktop only */
-
-    @media screen and (min-width: 769px) {
-        .mobile-parallax-text {
-            display: none !important;
-        }
-
-        .mobile-text-card {
-            display: none !important;
-        }
-    }
+}
 
 
-    /* =========================================================
-       MOBILE / IPHONE
-       ========================================================= */
+/* DESKTOP */
 
-    @media screen and (max-width: 768px) {
+.content-with-images {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.content-text {
+    max-width: 600px;
+    margin: 0 0 40px 0;
+    line-height: 1.3;
+    white-space: pre-line;
+    text-align: left;
+}
+
+.content-text.right-align {
+    text-align: right;
+    margin: 0 0 40px auto;
+}
+
+.content-text.sticky {
+    position: sticky;
+    top: 40px;
+    flex-shrink: 0;
+    width: 280px;
+    margin: 0;
+    order: 2;
+}
+
+.content-text.sticky.right-align {
+    text-align: right;
+    margin: 0;
+    order: 2;
+}
+
+.image-gallery {
+    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 600px;
+}
+
+.image-gallery.with-sticky-text {
+    margin: 0;
+    flex: 1;
+    max-width: 600px;
+    order: 1;
+    scroll-snap-type: y mandatory;
+    overflow-y: scroll;
+    height: 80vh;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+.image-gallery.with-sticky-text .content-image {
+    width: 100%;
+    height: auto;
+    min-height: 80vh;
+    object-fit: contain;
+    border: none;
+    display: block;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+    margin-bottom: 0;
+}
+
+.image-gallery.with-sticky-text::-webkit-scrollbar {
+    width: 6px;
+}
+
+.image-gallery.with-sticky-text::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.image-gallery.with-sticky-text::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 3px;
+}
+
+.content-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border: none;
+    display: block;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.content-image:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.content-image.portrait {
+    width: auto;
+    height: auto;
+    max-width: 600px;
+    object-fit: contain;
+}
+
+.content-link {
+    color: black;
+    text-decoration: none;
+}
+
+.content-link:hover {
+    text-decoration: underline;
+}
+
+.credits {
+    font-style: italic;
+    margin-top: 20px;
+    font-size: 12px;
+}
+
+.credits.with-sticky-text {
+    margin-top: 20px;
+}
+
+.mobile-parallax-text {
+    display: none;
+}
+
+
+/* =========================================================
+   IPHONE / MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
 
     html,
     body {
@@ -292,19 +261,21 @@
         inset: 0;
     }
 
-    /* Entire iPhone screen = two equal halves */
+    /*
+       ONE screen divided into two real halves.
+       dvh follows Safari's visible viewport.
+    */
     .container {
         display: grid;
-        grid-template-rows: 1fr 1fr;
+        grid-template-rows: 50% 50%;
+
         width: 100%;
         height: 100vh;
         height: 100dvh;
     }
 
 
-    /* =========================
-       TOP HALF
-       ========================= */
+    /* TOP HALF */
 
     .sidebar {
         position: relative;
@@ -315,35 +286,32 @@
         height: 100%;
         min-height: 0;
 
-        background-color: white;
-        z-index: 1000;
+        background: white;
 
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
 
         border-bottom: 1px solid #eee;
-        transition: none;
+
+        z-index: 1000;
     }
 
     .sidebar.hidden {
-        transform: none;
         visibility: hidden;
     }
 
 
-    /* =========================
-       BOTTOM HALF
-       ========================= */
+    /* BOTTOM HALF */
 
     .content-area {
-        margin-left: 0;
-        margin-top: 0;
+        margin: 0;
 
         width: 100%;
         height: 100%;
         min-height: 0;
 
         overflow: hidden;
+
         position: relative;
     }
 
@@ -355,7 +323,9 @@
         min-height: 0;
 
         padding: 0;
+
         overflow: hidden;
+
         position: relative;
     }
 
@@ -375,15 +345,13 @@
     }
 
 
-    /* =========================
-       IMAGE GALLERY
+    /*
+       THE IMPORTANT PART:
 
-       Vertical gallery where every
-       photograph occupies exactly
-       one bottom-half frame.
-       ========================= */
+       The gallery itself is exactly the size
+       of the bottom half.
+    */
 
-    .image-gallery,
     .image-gallery.with-sticky-text {
         width: 100%;
         max-width: none;
@@ -400,23 +368,23 @@
         overflow-x: hidden;
         overflow-y: scroll;
 
+        -webkit-overflow-scrolling: touch;
+
         scroll-snap-type: y mandatory;
         scroll-behavior: smooth;
 
-        -webkit-overflow-scrolling: touch;
         overscroll-behavior-y: contain;
     }
 
 
-    /* =========================
-       INDIVIDUAL IMAGES
+    /*
+       EACH IMAGE = EXACTLY ONE BOTTOM FRAME
 
-       Each image = exactly one frame
-       and snaps firmly into position.
-       ========================= */
+       This is what creates the "locking"
+       behaviour.
+    */
 
-    .content-image,
-    .image-gallery.with-sticky-text .content-image {
+    .image-gallery.with-sticky-text > .content-image {
         width: 100%;
 
         height: 100%;
@@ -426,14 +394,14 @@
         flex: 0 0 100%;
 
         object-fit: contain;
-        object-position: center center;
+        object-position: center;
 
         display: block;
 
         margin: 0;
         padding: 0;
 
-        border: none;
+        border: 0;
         border-radius: 0;
         box-shadow: none;
 
@@ -441,8 +409,8 @@
         scroll-snap-stop: always;
     }
 
-    /* Videos behave like photographs */
-    .image-gallery.with-sticky-text iframe.content-image {
+
+    .image-gallery.with-sticky-text > iframe.content-image {
         width: 100%;
 
         height: 100%;
@@ -453,7 +421,10 @@
 
         scroll-snap-align: start;
         scroll-snap-stop: always;
+
+        border: 0;
     }
+
 
     .content-image:hover {
         transform: none;
@@ -462,40 +433,37 @@
 
 
     /* Hide desktop project text */
+
     .content-text.sticky {
         display: none !important;
     }
 
 
-    /* =========================
-       PROJECT TEXT OVERLAY
-
-       Replaces navigation once
-       you've moved beyond image 1.
-       ========================= */
+    /* PROJECT INFORMATION IN TOP HALF */
 
     .mobile-parallax-text {
         display: none;
 
         position: fixed;
+
         top: 0;
         left: 0;
 
         width: 100%;
+
         height: 50vh;
         height: 50dvh;
 
-        background-color: white;
-
-        z-index: 1001;
+        background: white;
 
         border-bottom: 1px solid #eee;
 
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
 
+        z-index: 1001;
+
         opacity: 0;
-        padding: 0;
     }
 
     .mobile-parallax-text.visible {
@@ -523,8 +491,8 @@
         align-items: center;
         justify-content: center;
 
-        font-size: 14px;
         font-family: 'Times New Roman', serif;
+        font-size: 14px;
     }
 
     .mobile-parallax-text .content-text.right-align {
@@ -533,22 +501,19 @@
     }
 
 
-    /* =========================
-       PHOTO CREDITS
-       ========================= */
+    /* PHOTO CREDITS */
 
     .credits.with-sticky-text {
         position: absolute;
 
-        bottom: 10px;
         right: 10px;
+        bottom: 10px;
 
         margin: 0;
 
-        background: rgba(255, 255, 255, 0.9);
-
         padding: 5px 10px;
-        border-radius: 3px;
+
+        background: rgba(255,255,255,0.9);
 
         font-size: 10px;
 
@@ -556,73 +521,218 @@
     }
 
 
-    /* =========================
-       BIO / OTHER SECTIONS
-       ========================= */
+    /* BIO */
 
-    .content-section > .content-text:not(.sticky) {
+    #lars-marcel-braun {
+        overflow-y: auto;
+    }
+
+    #lars-marcel-braun > .content-text {
         padding: 20px;
         margin: 0;
 
+        height: auto;
+        max-width: none;
+    }
+
+    #lars-marcel-braun > .image-gallery {
+        width: 100%;
         max-width: none;
 
-        overflow-y: auto;
-        height: 100%;
+        height: auto;
+
+        margin: 0;
     }
 
-    .content-section > .image-gallery:not(.with-sticky-text) {
-        height: 100%;
-    }
-
-    .content-image.portrait {
+    #lars-marcel-braun .content-image.portrait {
         width: 100%;
         max-width: 100%;
 
-        height: 100%;
-        min-height: 100%;
+        height: auto;
+        min-height: 0;
 
         object-fit: contain;
+
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+
+    /* EMAIL / INSTAGRAM */
+
+    #email .content-text,
+    #instagram .content-text {
+        padding: 20px;
+        margin: 0;
     }
 }
+
 </style>
 </head>
-<body>
-    <div class="container">
-        <nav class="sidebar">
-            <ul class="nav-list">
-                <li class="nav-item" data-target="lars-marcel-braun">lars marcel braun ✧.*</li>
-                <li class="nav-item" data-target="nachhall">nachhall</li>
-                <li class="nav-item" data-target="humanoid">humanoid</li>
-                <li class="nav-item" data-target="geschichte">geschichte</li>
-                <li class="nav-item" data-target="la-traviata">la traviata</li>
-                <li class="nav-item" data-target="you-are-not">you are not what you say i am</li>
-                <li class="nav-item" data-target="slagroom">slagroom</li>
-                <li> </li>
-                <li class="nav-item" data-target="das-schlaue-füchslein">das schlaue füchslein</li>
-                <li class="nav-item" data-target="il-barbiere">il barbiere di siviglia</li>
-                <li class="nav-item" data-target="tancredi">tancredi</li>
-                <li class="nav-item" data-target="email">email</li>
-                <li class="nav-item" data-target="instagram">instagram</li>
-            </ul>
-        </nav>
 
-        <main class="content-area">
-            <div class="content-section" id="lars-marcel-braun" data-section-title="lars marcel braun">
-    <div class="content-text">Lars Marcel Braun (*1994 in Aachen; raised in Seoul, Oakland and Lexington) is a stage director working across opera, theatre, and visual arts. To finance his studies in physics, musicology, and Slavic literature in Zurich, he found work as an extra at the opera, which exposed him to theatre for the first time and sparked his path into directing. After some internships and assistantships, he was appointed staff director at the Komische Oper Berlin from 2014 to 2017, personally invited by Barrie Kosky. Since then, he has worked as a freelance assistant and associate at major institutions internationally. His practice has been shaped by collaborations with mentors including David Alden, Andreas Homoki, Eva-Maria Höckmayr, Jan-Philipp Gloger, Kirill Serebrennikov, Ted Huffman, and Nanine Linning.
+
+<body>
+
+<div class="container">
+
+<nav class="sidebar">
+<ul class="nav-list">
+
+<li class="nav-item" data-target="lars-marcel-braun">lars marcel braun ✧.*</li>
+<li class="nav-item" data-target="nachhall">nachhall</li>
+<li class="nav-item" data-target="humanoid">humanoid</li>
+<li class="nav-item" data-target="geschichte">geschichte</li>
+<li class="nav-item" data-target="la-traviata">la traviata</li>
+<li class="nav-item" data-target="you-are-not">you are not what you say i am</li>
+<li class="nav-item" data-target="slagroom">slagroom</li>
+
+<li>&nbsp;</li>
+
+<li class="nav-item" data-target="das-schlaue-füchslein">das schlaue füchslein</li>
+<li class="nav-item" data-target="il-barbiere">il barbiere di siviglia</li>
+<li class="nav-item" data-target="tancredi">tancredi</li>
+<li class="nav-item" data-target="email">email</li>
+<li class="nav-item" data-target="instagram">instagram</li>
+
+</ul>
+</nav>
+
+
+<main class="content-area">
+
+
+<!-- BIO -->
+
+<div class="content-section" id="lars-marcel-braun">
+
+<div class="content-text">Lars Marcel Braun (*1994 in Aachen; raised in Seoul, Oakland and Lexington) is a stage director working across opera, theatre, and visual arts. To finance his studies in physics, musicology, and Slavic literature in Zurich, he found work as an extra at the opera, which exposed him to theatre for the first time and sparked his path into directing. After some internships and assistantships, he was appointed staff director at the Komische Oper Berlin from 2014 to 2017, personally invited by Barrie Kosky. Since then, he has worked as a freelance assistant and associate at major institutions internationally. His practice has been shaped by collaborations with mentors including David Alden, Andreas Homoki, Eva-Maria Höckmayr, Jan-Philipp Gloger, Kirill Serebrennikov, Ted Huffman, and Nanine Linning.
 
 Beyond opera, his own artistic projects also include a series of immersive installations at Milkshake Festival in Amsterdam, blending nightlife aesthetics with theatrical interventions with drag performers and dancers. Recent works include acclaimed debuts at Semperoper Dresden and Oper Graz. The upcoming season is highlighted by a world premiere in Graz for <i>steirischer herbst</i> and his first opera buffa at Oldenburgisches Staatstheater.
 
-Lars is a fellow of <i>Akademie Musiktheater heute</i> in the 2024–2026 selection.
-    </div>
-    <div class="image-gallery">
-        <img class="content-image portrait" src="./websitepics/R1-02008-0007.JPG" alt="Portrait of Lars Marcel Braun">
-    </div>
-    <div class="credits">*photo copyright alex de brabant*</div>
+Lars is a fellow of <i>Akademie Musiktheater heute</i> in the 2024–2026 selection.</div>
+
+<div class="image-gallery">
+<img class="content-image portrait"
+src="./websitepics/R1-02008-0007.JPG"
+alt="Portrait of Lars Marcel Braun">
 </div>
 
-            <div class="content-section" id="geschichte" data-section-title="geschichte">
-                <div class="content-with-images">
-                    <div class="content-text sticky right-align">geschichte
+<div class="credits">*photo copyright alex de brabant*</div>
+
+</div>
+
+
+
+<!-- NACHHALL -->
+
+<div class="content-section" id="nachhall">
+
+<div class="content-with-images">
+
+<div class="content-text sticky">nachhall (ua)
+opera by ui-kyung lee with a libretto by jasmina schädler (2025)
+inspired by the essay cleaning the dead’s house 죽은 자의 집 청소 by kim wan
+ORF musikprotokoll x steirischer herbst 2025
+world premiere 5.10.25
+conductor: claire levacher / ana milijasević
+director/lights/video: lars marcel braun
+set/costumes: elisa weiss
+
+w/ fangyong liang, martin simonovski, beatriz gaudêncio ramos, gabriela šipek, mikayla jensen-large, katie richardson mccrae, seungboom lee
+the project is supported by the korea cultural center’s K_on_temporary initiative</div>
+
+<div>
+
+<div class="image-gallery with-sticky-text">
+
+<img class="content-image" src="./websitepics/MS100215.jpg">
+<img class="content-image" src="./websitepics/MS100220.jpg">
+<img class="content-image" src="./websitepics/MS100251.jpg">
+<img class="content-image" src="./websitepics/Screenshot 2025-10-10 at 19.06.30.png">
+<img class="content-image" src="./websitepics/MS100266.jpg">
+<img class="content-image" src="./websitepics/MS100288.jpg">
+<img class="content-image" src="./websitepics/MS100303.jpg">
+<img class="content-image" src="./websitepics/Screenshot 2025-10-10 at 19.06.36.png">
+<img class="content-image" src="./websitepics/MS100318.jpg">
+<img class="content-image" src="./websitepics/MS100330.jpg">
+<img class="content-image" src="./websitepics/MS100358.jpg">
+
+<iframe
+class="content-image"
+src="https://vimeo.com/1119743627?fl=pl&fe=sh"
+frameborder="0"
+allowfullscreen>
+</iframe>
+
+</div>
+
+<div class="credits with-sticky-text">*photos copyright lars marcel braun*</div>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- HUMANOID -->
+
+<div class="content-section" id="humanoid">
+
+<div class="content-with-images">
+
+<div class="content-text sticky">humanoid
+sci-fi oper by leonard evers with a libretto by pamela dürr (2018)
+semperoper dresden
+premiere 13.6.25
+conductor: chloé dufresne
+director: lars marcel braun
+video: janic bebi
+set: victor labarthe d'arnoux
+costumes: selina tholl
+dramaturgy: martin lühr
+lights: marco dietzel
+
+w/ sofia savenko, dominika škrabalova, jongwoo hong, gerrit illenberger, johannes wieners, ks andreas scheibner, komparserie der semperoper</div>
+
+<div>
+
+<div class="image-gallery with-sticky-text">
+
+<img class="content-image" src="./websitepics/humanoid_ohp_02256_FotoSebastianHoppe.jpg">
+<img class="content-image" src="./websitepics/humanoid_khp_00934_FotoSebastianHoppe.jpg">
+<img class="content-image" src="./websitepics/humanoid_ohp_03426_FotoSebastianHoppe.jpg">
+<img class="content-image" src="./websitepics/Screenshot 2025-09-08 at 08.43.20.png">
+<img class="content-image" src="./websitepics/humanoid_ohp_05036_FotoSebastianHoppe.jpg">
+<img class="content-image" src="./websitepics/humanoid_ohp_05263_FotoSebastianHoppe.jpg">
+<img class="content-image" src="./websitepics/Screenshot 2025-09-08 at 08.43.25.png">
+<img class="content-image" src="./websitepics/humanoid_khp_00478_FotoSebastianHoppe.jpg">
+<img class="content-image" src="./websitepics/humanoid_ohp_04242_FotoSebastianHoppe.jpg">
+<img class="content-image" src="./websitepics/humanoid_ohp_04631_FotoSebastianHoppe.jpg">
+
+<iframe
+class="content-image"
+src="https://www.youtube.com/embed/HPpQgKOiwak?si=bCGk0XFLG5mZTA5k"
+frameborder="0"
+allowfullscreen>
+</iframe>
+
+</div>
+
+<div class="credits with-sticky-text">*photos copyright sebastian hoppe*</div>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- GESCHICHTE -->
+
+<div class="content-section" id="geschichte">
+
+<div class="content-with-images">
+
+<div class="content-text sticky right-align">geschichte
 operetta a capella by oscar strasnoy, based on fragments from witold gombrowicz (2003)
 oper graz
 premiere 25.4.23
@@ -633,26 +743,38 @@ dramaturgy: dorothee harpain
 w/ ana caseiro, ellen rose kelly, felix heuser, johannes wieners, valentino blasina, harald hieronymus hein
 
 (video upon request)</div>
-                    <div>
-                        <div class="image-gallery with-sticky-text">
-                            <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_005.jpg" alt="Geschichte production photo 1">
-                            <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_029.jpg" alt="Geschichte production photo 2">
-                            <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_034.jpg" alt="Geschichte production photo 3">
-                            <img class="content-image" src="./websitepics/Screenshot 2025-09-08 at 08.54.13.png" alt="Geschichte production photo review 1">
-                            <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_023.jpg" alt="Geschichte production photo 4">
-                            <img class="content-image" src="./websitepics/Screenshot 2025-09-08 at 08.54.17.png" alt="Geschichte production photo review 2">
-                            <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_025.jpg" alt="Geschichte production photo 5">
-                            <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_012.jpg" alt="Geschichte production photo 6">
-                            <img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_027.jpg" alt="Geschichte production photo 7">
-                        </div>
-                        <div class="credits with-sticky-text">*photos copyright werner kmetitsch*</div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="content-section" id="la-traviata" data-section-title="la traviata">
-                <div class="content-with-images">
-                    <div class="content-text sticky">la traviata
+<div>
+
+<div class="image-gallery with-sticky-text">
+
+<img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_005.jpg">
+<img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_029.jpg">
+<img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_034.jpg">
+<img class="content-image" src="./websitepics/Screenshot 2025-09-08 at 08.54.13.png">
+<img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_023.jpg">
+<img class="content-image" src="./websitepics/Screenshot 2025-09-08 at 08.54.17.png">
+<img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_025.jpg">
+<img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_012.jpg">
+<img class="content-image" src="./websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_027.jpg">
+
+</div>
+
+<div class="credits with-sticky-text">*photos copyright werner kmetitsch*</div>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- LA TRAVIATA -->
+
+<div class="content-section" id="la-traviata">
+
+<div class="content-with-images">
+
+<div class="content-text sticky">la traviata
 opera in three acts by giuseppe verdi
 staatstheater darmstadt
 premiere 28.1.23
@@ -664,22 +786,34 @@ choreo: otto pichler
 dramaturgy: isabelle becker
 
 w/ hila baggio, cathrin lange, solgerd isalv, ingrid katzengruber, andres agudelo, matthew vickers, aluda todua, julian orlishausen, michael pegher, marco mondragón, david pichlmaier, jared ice, opernchor des staatstheaters darmstadt, statisterie des staatstheater darmstadt</div>
-                    <div>
-                        <div class="image-gallery with-sticky-text">
-                            <img class="content-image" src="./websitepics/traviata1.jpg" alt="La Traviata production photo 1">
-                            <img class="content-image" src="./websitepics/traviata2.jpg" alt="La Traviata production photo 2">
-                            <img class="content-image" src="websitepics/traviata3.jpg" alt="La Traviata production photo 4">
-                            <img class="content-image" src="websitepics/traviata4.jpg" alt="La Traviata production photo 5">
-                            <img class="content-image" src="websitepics/traviata5.jpg" alt="La Traviata production photo 6">
-                        </div>
-                        <div class="credits with-sticky-text">*photos copyright nils heck*</div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="content-section" id="you-are-not" data-section-title="you are not what you say i am">
-                <div class="content-with-images">
-                    <div class="content-text sticky right-align">you are not what you say i am
+<div>
+
+<div class="image-gallery with-sticky-text">
+
+<img class="content-image" src="./websitepics/traviata1.jpg">
+<img class="content-image" src="./websitepics/traviata2.jpg">
+<img class="content-image" src="./websitepics/traviata3.jpg">
+<img class="content-image" src="./websitepics/traviata4.jpg">
+<img class="content-image" src="./websitepics/traviata5.jpg">
+
+</div>
+
+<div class="credits with-sticky-text">*photos copyright nils heck*</div>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- YOU ARE NOT -->
+
+<div class="content-section" id="you-are-not">
+
+<div class="content-with-images">
+
+<div class="content-text sticky right-align">you are not what you say i am
 immersive interdisciplinary installation
 milkshake festival 2019 x pornceptual
 concept, direction and video: lars marcel braun
@@ -688,21 +822,32 @@ set: victor labarthe d'arnoux
 lights: michiel knoop
 vj: zoey vero
 w/ far too many drag performers to all name, patrick mason, dancers of ndt, etc.</div>
-                    <div>
-                        <div class="image-gallery with-sticky-text">
-                            <img class="content-image" src="./websitepics/IMG_9403.jpg" alt="You Are Not installation photo 1">
-                            <img class="content-image" src="./websitepics/kyle_performance_2.webp"  alt="You Are Not installation photo 2">
-                            <img class="content-image" src="./websitepics/IMG_9419.jpg" alt="You Are Not installation photo 3">
-                            <img class="content-image" src="./websitepics/cassandre_performance_2.webp" alt="You Are Not installation photo 4">
-                            <img class="content-image" src="./websitepics/NDT_performance_2.webp" alt="You Are Not installation photo 5">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="content-section" id="slagroom" data-section-title="slagroom">
-                <div class="content-with-images">
-                    <div class="content-text sticky">slagroom
+<div>
+
+<div class="image-gallery with-sticky-text">
+
+<img class="content-image" src="./websitepics/IMG_9403.jpg">
+<img class="content-image" src="./websitepics/kyle_performance_2.webp">
+<img class="content-image" src="./websitepics/IMG_9419.jpg">
+<img class="content-image" src="./websitepics/cassandre_performance_2.webp">
+<img class="content-image" src="./websitepics/NDT_performance_2.webp">
+
+</div>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- SLAGROOM -->
+
+<div class="content-section" id="slagroom">
+
+<div class="content-with-images">
+
+<div class="content-text sticky">slagroom
 interactive installation
 milkshake festival 2018 x pornceptual
 concept, direction and video: lars marcel braun
@@ -710,137 +855,38 @@ set: victor labarthe d'arnoux
 lights: marijn hubgretse
 vj: zoey vero
 w/ all drag performers in attendance and guests of the festival</div>
-                    <div>
-                        <div class="image-gallery with-sticky-text">
-                            <img class="content-image" src="./websitepics/milkshake-12.webp" alt="Slagroom installation photo 1">
-                            <img class="content-image" src="./websitepics/milkshake-14.webp" alt="Slagroom installation photo 2">
-                            <img class="content-image" src="websitepics/milkshake-16.webp" alt="Slagroom installation photo 3">
-                            <img class="content-image" src="./websitepics/milkshake-18.webp" alt="Slagroom installation photo 4">
-                            <img class="content-image" src="./websitepics/milkshake-5.webp" alt="Slagroom installation photo 6">
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-              <div class="content-section" id="nachhall" data-section-title="nachhall">
-                <div class="content-with-images">
-                    <div class="content-text sticky">
-                        nachhall (ua)
-                        opera by ui-kyung lee with a libretto by jasmina schädler (2025)
-                        inspired by the essay cleaning the dead’s house 죽은 자의 집 청소 by kim wan
-                        ORF musikprotokoll x steirischer herbst 2025
-                        world premiere 5.10.25
-                        conductor: claire levacher / ana milijasević
-                        director/lights/video: lars marcel braun
-                        set/costumes: elisa weiss
-                        
+<div>
 
-                        w/ fangyong liang, martin simonovski, beatriz gaudêncio ramos, gabriela šipek, mikayla jensen-large, katie richardson mccrae, seungboom lee
-                        the project is supported by the korea cultural center’s K_on_temporary initiative
-                    </div>
-                    <div>
-                        <div class="image-gallery with-sticky-text">
-                            <img class="content-image" src="./websitepics/MS100215.jpg" alt="nachhall production photo 1">
-                            <img class="content-image" src="./websitepics/MS100220.jpg" alt="nachhall production photo 2">
-                            <img class="content-image" src="./websitepics/MS100251.jpg" alt="nachhall production photo 3">
-                            <img class="content-image" src="./websitepics/Screenshot 2025-10-10 at 19.06.30.png" alt="nachhall review photo 1">
-                            <img class="content-image" src="./websitepics/MS100266.jpg" alt="nachhall production photo 4">
-                            <img class="content-image" src="./websitepics/MS100288.jpg" alt="nachhall production photo 5">
-                            <img class="content-image" src="./websitepics/MS100303.jpg" alt="nachhall production photo 6">
-                            <img class="content-image" src="./websitepics/Screenshot 2025-10-10 at 19.06.36.png" alt="nachhall review photo 2">
-                            <img class="content-image" src="./websitepics/MS100318.jpg" alt="nachhall production photo 7">
-                            <img class="content-image" src="./websitepics/MS100330.jpg" alt="nachhall production photo 8">
-                            <img class="content-image" src="./websitepics/MS100358.jpg" alt="nachhall production photo 9">
-                            <iframe class="content-image" src="https://vimeo.com/1119743627?fl=pl&fe=sh" title="nachhall video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                        </div>
-                        <div class="credits with-sticky-text">*photos copyright lars marcel braun*</div>
-                    </div>
-                </div>
-            </div>
+<div class="image-gallery with-sticky-text">
 
-            <div class="content-section" id="humanoid" data-section-title="humanoid">
-                <div class="content-with-images">
-                    <div class="content-text sticky">
-                        humanoid
-                        sci-fi oper by leonard evers with a libretto by pamela dürr (2018)
-                        semperoper dresden
-                        premiere 13.6.25
-                        conductor: chloé dufresne
-                        director: lars marcel braun
-                        video: janic bebi
-                        set: victor labarthe d'arnoux
-                        costumes: selina tholl
-                        dramaturgy: martin lühr
-                        lights: marco dietzel
+<img class="content-image" src="./websitepics/milkshake-12.webp">
+<img class="content-image" src="./websitepics/milkshake-14.webp">
+<img class="content-image" src="./websitepics/milkshake-16.webp">
+<img class="content-image" src="./websitepics/milkshake-18.webp">
+<img class="content-image" src="./websitepics/milkshake-5.webp">
 
-                        w/ sofia savenko, dominika škrabalova, jongwoo hong, gerrit illenberger, johannes wieners, ks andreas scheibner, komparserie der semperoper
-                    
-                    </div>
-                    <div>
-                        <div class="image-gallery with-sticky-text">
-                            <img class="content-image" src="./websitepics/humanoid_ohp_02256_FotoSebastianHoppe.jpg" alt="Humanoid production photo 1">
-                            <img class="content-image" src="./websitepics/humanoid_khp_00934_FotoSebastianHoppe.jpg" alt="Humanoid production photo 2">
-                            <img class="content-image" src="./websitepics/humanoid_ohp_03426_FotoSebastianHoppe.jpg" alt="Humanoid production photo 3">
-                            <img class="content-image" src="./websitepics/Screenshot 2025-09-08 at 08.43.20.png" alt="Humanoid production photo review 1">
-                            <img class="content-image" src="./websitepics/humanoid_ohp_05036_FotoSebastianHoppe.jpg" alt="Humanoid production photo 4">
-                            <img class="content-image" src="./websitepics/humanoid_ohp_05263_FotoSebastianHoppe.jpg" alt="Humanoid production photo 5">
-                            <img class="content-image" src="./websitepics/Screenshot 2025-09-08 at 08.43.25.png" alt="Humanoid production photo review 2">
-                            <img class="content-image" src="./websitepics/humanoid_khp_00478_FotoSebastianHoppe.jpg" alt="Humanoid production photo 6">
-                            <img class="content-image" src="./websitepics/humanoid_ohp_04242_FotoSebastianHoppe.jpg" alt="Humanoid production photo 7">
-                            <img class="content-image" src="./websitepics/humanoid_ohp_04631_FotoSebastianHoppe.jpg" alt="Humanoid production photo 8">
-                            <iframe class="content-image" src="https://www.youtube.com/embed/HPpQgKOiwak?si=bCGk0XFLG5mZTA5k" title="Humanoid trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                        </div>
-                        <div class="credits with-sticky-text">*photos copyright sebastian hoppe*</div>
-                    </div>
-                </div>
-            </div>
+</div>
 
-            <div class="content-section" id="il-barbiere" data-section-title="il barbiere di siviglia">
+</div>
+</div>
+</div>
+
+
+
+<!-- FÜCHSLEIN -->
+
+<div class="content-section" id="das-schlaue-füchslein">
+
 <div class="content-with-images">
-                    <div class="content-text sticky">
-                        il barbiere di siviglia
-                        opera buffa in 2 acts by gioachino rossini
-                        oldenburgisches staatstheater
-                        premiere 18.4.26
-                        conductor: eric staiger
-                        director: lars marcel braun
-                        set: victor labarthe d'arnoux
-                        costumes: selina tholl
-                        lights: arne waldl
 
-
-                        w/ aksel daveyan, penelope kendros, chanhee cho, leilei xie, seungweon lee, arthur bruce, ks paul brady, marija jokovic, staatstheaterchor, statisterie
-                    
-                    </div>
-                    <div>
-                        <div class="image-gallery with-sticky-text">
-                            <img class="content-image" src="./websitepics/DSC03137.jpg" alt="barbiere production photo 1">
-                            <img class="content-image" src="./websitepics/DSC02645.jpg" alt="barbiere production photo 2">
-                            <img class="content-image" src="./websitepics/DSC02706.jpg" alt="barbiere production photo 3">
-                            <img class="content-image" src="./websitepics/DSC02765.jpg" alt="barbiere production photo 4">
-                            <img class="content-image" src="./websitepics/DSC02790.jpg" alt="barbiere production photo 5">
-                            <img class="content-image" src="./websitepics/DSC02873.jpg" alt="barbiere production photo 7">
-                            <img class="content-image" src="./websitepics/DSC03137.jpg" alt="barbiere production photo 8">
-                            <img class="content-image" src="./websitepics/DSC03249.jpg" alt="barbiere production photo 9">
-                            <img class="content-image" src="./websitepics/DSC03254.jpg" alt="barbiere production photo 10">
-                            <img class="content-image" src="./websitepics/DSC03324.jpg" alt="barbiere production photo 11">
-                            <img class="content-image" src="./websitepics/DSC03410.jpg" alt="barbiere production photo 12">
-
-                        </div>
-                        <div class="credits with-sticky-text">*photos copyright stefan walzl*</div>
-                    </div>
-                </div>            </div>
-
-            <div class="content-section" id="das-schlaue-füchslein" data-section-title="das schlaue füchslein">
-                <div class="content-with-images">
-                    <div class="content-text sticky right-align">
-                        příhody lišky bystroušky
-                        or das schlaue füchslein
+<div class="content-text sticky right-align">příhody lišky bystroušky
+or das schlaue füchslein
 by leoš janáček
 opera in 3 acts
 landestheater detmold
 premiere 5.12.25
-                        
+
 director: lars marcel braun
 conductor: claudio novati
 (based on a concept by geertje boeden)
@@ -850,25 +896,79 @@ dramaturgy: emilia ebert
 chorleitung: francesco damiani
 w/ johanna nylund, jonah spungin, emily dorn, ricardo llamas garcias, jaima mondaca galaz, nikos striezel, katarzyna włodarczyk, marianna nomikou, boyoung lee, milica milic, oggi milivojsa, tatiana yang, meta hildebrandt, christin stanowsky, franziska pfalzgraf, ks brigitte bauma
 Opernchor Landestheater Detmold
-Detmolder Schloss Spatzen
-</div>
-                    <div>
-                        <div class="image-gallery with-sticky-text">
-                            <img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_001.jpg" alt="vixen production photo 1">
-                            <img class="content-image" src="./websitepics/DasSchlauFuchs_FotoJQ_209.jpg" alt="vixen production photo 2">
-                            <img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_226.jpg" alt="vixen production photo 3">
-                            <img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_182.jpg" alt="vixen production photo 4">
-                            <img class="content-image" src="./websitepics/DasSchlauFuchs_FotoJQ_283.jpg" alt="vixen production photo 5">
-    
-                        </div>
-                        <div class="credits with-sticky-text">*photos copyright jochen quast*</div>
-                    </div>
-                </div>
-            </div>
+Detmolder Schloss Spatzen</div>
 
-<div class="content-section" id="tancredi" data-section-title="tancredi">
-    <div class="content-with-images">
-        <div class="content-text sticky right-align">tancredi
+<div>
+
+<div class="image-gallery with-sticky-text">
+
+<img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_001.jpg">
+<img class="content-image" src="./websitepics/DasSchlauFuchs_FotoJQ_209.jpg">
+<img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_226.jpg">
+<img class="content-image" src="./websitepics/DasSchlauFuchs_HP2_FotoJQ_182.jpg">
+<img class="content-image" src="./websitepics/DasSchlauFuchs_FotoJQ_283.jpg">
+
+</div>
+
+<div class="credits with-sticky-text">*photos copyright jochen quast*</div>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- BARBIERE -->
+
+<div class="content-section" id="il-barbiere">
+
+<div class="content-with-images">
+
+<div class="content-text sticky">il barbiere di siviglia
+opera buffa in 2 acts by gioachino rossini
+oldenburgisches staatstheater
+premiere 18.4.26
+conductor: eric staiger
+director: lars marcel braun
+set: victor labarthe d'arnoux
+costumes: selina tholl
+lights: arne waldl
+
+w/ aksel daveyan, penelope kendros, chanhee cho, leilei xie, seungweon lee, arthur bruce, ks paul brady, marija jokovic, staatstheaterchor, statisterie</div>
+
+<div>
+
+<div class="image-gallery with-sticky-text">
+
+<img class="content-image" src="./websitepics/DSC03137.jpg">
+<img class="content-image" src="./websitepics/DSC02645.jpg">
+<img class="content-image" src="./websitepics/DSC02706.jpg">
+<img class="content-image" src="./websitepics/DSC02765.jpg">
+<img class="content-image" src="./websitepics/DSC02790.jpg">
+<img class="content-image" src="./websitepics/DSC02873.jpg">
+<img class="content-image" src="./websitepics/DSC03137.jpg">
+<img class="content-image" src="./websitepics/DSC03249.jpg">
+<img class="content-image" src="./websitepics/DSC03254.jpg">
+<img class="content-image" src="./websitepics/DSC03324.jpg">
+<img class="content-image" src="./websitepics/DSC03410.jpg">
+
+</div>
+
+<div class="credits with-sticky-text">*photos copyright stefan walzl*</div>
+
+</div>
+</div>
+</div>
+
+
+
+<!-- TANCREDI -->
+
+<div class="content-section" id="tancredi">
+
+<div class="content-with-images">
+
+<div class="content-text sticky right-align">tancredi
 by gioachino rossini
 opera seria in 2 acts
 oper köln
@@ -885,171 +985,491 @@ action: ran arthur braun
 
 w/ adriana bastidas gamboa, giuliana gianfaldoni, dmitry ivanchey, gabriele sagona, johanna thomsen, wesley harrison, stunt factory, chor der oper köln, gürzenich-orchester</div>
 
-        <div>
-            <div class="image-gallery with-sticky-text">
-                <img class="content-image" src="./websitepics/tancredi-01.webp" alt="Tancredi production photo 1">
-                <img class="content-image" src="./websitepics/tancredi-02.webp" alt="Tancredi production photo 2">
-                <img class="content-image" src="./websitepics/tancredi-03.webp" alt="Tancredi production photo 3">
-                <img class="content-image" src="./websitepics/tancredi-04.webp" alt="Tancredi production photo 4">
-                <img class="content-image" src="./websitepics/tancredi-05.webp" alt="Tancredi production photo 5">
-            </div>
-            <div class="credits with-sticky-text">*photos copyright matthias jung*</div>
-        </div>
-    </div>
+<div>
+
+<div class="image-gallery with-sticky-text">
+
+<img class="content-image" src="./websitepics/tancredi-01.webp">
+<img class="content-image" src="./websitepics/tancredi-02.webp">
+<img class="content-image" src="./websitepics/tancredi-03.webp">
+<img class="content-image" src="./websitepics/tancredi-04.webp">
+<img class="content-image" src="./websitepics/tancredi-05.webp">
+
 </div>
-            <div class="content-section" id="email" data-section-title="email">
-                <div class="content-text right-align"><a href="mailto:braun.lars@icloud.com" class="content-link">braun.lars@icloud.com</a></div>
-            </div>
 
-            <div class="content-section" id="instagram" data-section-title="instagram">
-                <div class="content-text"><a href="https://instagram.com/internetlars" target="_blank" class="content-link">@internetlars</a></div>
-            </div>
-        </main>
-    </div>
+<div class="credits with-sticky-text">*photos copyright matthias jung*</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navItems = document.querySelectorAll('.nav-item');
-            const contentSections = document.querySelectorAll('.content-section');
-            const sidebar = document.querySelector('.sidebar');
-            let parallaxTextOverlay = null;
+</div>
+</div>
+</div>
 
-            // Ensure all sections are hidden on page load
-            contentSections.forEach(section => section.classList.remove('active'));
-            navItems.forEach(item => item.classList.remove('active'));
 
-            // Ensure sidebar is visible on desktop
-            if (!isMobile()) {
-                sidebar.classList.remove('hidden');
+
+<!-- EMAIL -->
+
+<div class="content-section" id="email">
+
+<div class="content-text right-align">
+
+<a
+href="mailto:braun.lars@icloud.com"
+class="content-link">
+braun.lars@icloud.com
+</a>
+
+</div>
+</div>
+
+
+
+<!-- INSTAGRAM -->
+
+<div class="content-section" id="instagram">
+
+<div class="content-text">
+
+<a
+href="https://instagram.com/internetlars"
+target="_blank"
+class="content-link">
+@internetlars
+</a>
+
+</div>
+</div>
+
+
+</main>
+</div>
+
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    const navItems =
+        document.querySelectorAll('.nav-item');
+
+    const contentSections =
+        document.querySelectorAll('.content-section');
+
+    const sidebar =
+        document.querySelector('.sidebar');
+
+    let parallaxTextOverlay = null;
+
+
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
+
+
+    /* INITIAL STATE */
+
+    contentSections.forEach(function(section) {
+        section.classList.remove('active');
+    });
+
+    navItems.forEach(function(item) {
+        item.classList.remove('active');
+    });
+
+
+    /* CREATE MOBILE TEXT AREA */
+
+    function createParallaxTextOverlay() {
+
+        if (parallaxTextOverlay) {
+            return;
+        }
+
+        parallaxTextOverlay =
+            document.createElement('div');
+
+        parallaxTextOverlay.className =
+            'mobile-parallax-text';
+
+        document.body.appendChild(
+            parallaxTextOverlay
+        );
+    }
+
+
+    function resetMobileTop() {
+
+        sidebar.classList.remove('hidden');
+
+        if (parallaxTextOverlay) {
+            parallaxTextOverlay.classList.remove(
+                'visible'
+            );
+        }
+    }
+
+
+    /*
+       MOBILE SCROLL BEHAVIOUR
+    */
+
+    function handleMobileParallax(
+        imageGallery,
+        contentText
+    ) {
+
+        if (
+            !isMobile() ||
+            !imageGallery ||
+            !contentText
+        ) {
+            return;
+        }
+
+
+        const images =
+            imageGallery.querySelectorAll(
+                '.content-image'
+            );
+
+
+        if (images.length < 2) {
+            return;
+        }
+
+
+        const frameHeight =
+            imageGallery.clientHeight;
+
+
+        if (!frameHeight) {
+            return;
+        }
+
+
+        const scrollTop =
+            imageGallery.scrollTop;
+
+
+        /*
+           Which snapped image are we on?
+        */
+
+        const currentImageIndex =
+            Math.round(
+                scrollTop / frameHeight
+            );
+
+
+        /*
+           Image 1:
+           navigation upstairs.
+
+           Image 2 onwards:
+           project information upstairs.
+        */
+
+        if (currentImageIndex >= 1) {
+
+            sidebar.classList.add('hidden');
+
+
+            if (parallaxTextOverlay) {
+
+                const rightAligned =
+                    contentText.classList.contains(
+                        'right-align'
+                    );
+
+
+                const textClass =
+                    rightAligned
+                        ? 'content-text right-align'
+                        : 'content-text';
+
+
+                parallaxTextOverlay.innerHTML =
+                    '<div class="' +
+                    textClass +
+                    '">' +
+                    contentText.innerHTML +
+                    '</div>';
+
+
+                parallaxTextOverlay.classList.add(
+                    'visible'
+                );
             }
 
-            // Create mobile parallax text overlay
-            function createParallaxTextOverlay() {
-                if (parallaxTextOverlay) return;
-                
-                parallaxTextOverlay = document.createElement('div');
-                parallaxTextOverlay.className = 'mobile-parallax-text';
-                document.body.appendChild(parallaxTextOverlay);
-            }
+        } else {
 
-            // Check if mobile
-            function isMobile() {
-                return window.innerWidth <= 768;
-            }
+            resetMobileTop();
 
-            // Handle scroll for mobile parallax effect
-            function handleMobileParallax(imageGallery, contentText) {
-                if (!isMobile() || !imageGallery || !contentText) return;
+        }
+    }
 
-                const images = imageGallery.querySelectorAll('.content-image, iframe');
-                if (images.length < 2) return;
 
-                const scrollTop = imageGallery.scrollTop;
-                const imageHeight = window.innerHeight * 0.5; // 50vh
-                
-                // Calculate which image is currently in view
-                const currentImageIndex = Math.floor(scrollTop / imageHeight);
-                
-                // If we're on the second image or beyond, show content text
-                if (currentImageIndex >= 1) {
-                    // Hide sidebar, show content text
-                    sidebar.classList.add('hidden');
-                    if (parallaxTextOverlay) {
-                        const isRightAlign = contentText.classList.contains('right-align');
-                        const textClass = isRightAlign ? 'content-text right-align' : 'content-text';
-                        parallaxTextOverlay.innerHTML = '<div class="' + textClass + '">' + contentText.innerHTML + '</div>';
-                        parallaxTextOverlay.classList.add('visible');
-                    }
-                } else {
-                    // Show sidebar, hide content text
-                    sidebar.classList.remove('hidden');
-                    if (parallaxTextOverlay) {
-                        parallaxTextOverlay.classList.remove('visible');
-                    }
+    /*
+       NAVIGATION
+    */
+
+    navItems.forEach(function(item) {
+
+        item.addEventListener(
+            'click',
+            function() {
+
+
+                const target =
+                    this.getAttribute(
+                        'data-target'
+                    );
+
+
+                const targetSection =
+                    document.getElementById(
+                        target
+                    );
+
+
+                if (!targetSection) {
+                    return;
                 }
-            }
 
-            navItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const target = this.getAttribute('data-target');
-                    const targetSection = document.getElementById(target);
-                    
-                    if (!targetSection) return;
-                    
-                    // Check if this section is already active
-                    const isCurrentlyActive = this.classList.contains('active');
-                    
-                    if (isCurrentlyActive) {
-                        // Toggle off: remove active class and hide section
-                        this.classList.remove('active');
-                        targetSection.classList.remove('active');
-                        
-                        // Reset mobile parallax
-                        if (isMobile()) {
-                            sidebar.classList.remove('hidden');
-                            if (parallaxTextOverlay) {
-                                parallaxTextOverlay.classList.remove('visible');
-                            }
-                        }
-                    } else {
-                        // Remove active class from all nav items and content sections
-                        navItems.forEach(nav => nav.classList.remove('active'));
-                        contentSections.forEach(section => section.classList.remove('active'));
-                        
-                        // Add active class to clicked nav item and show section
-                        this.classList.add('active');
-                        targetSection.classList.add('active');
-                        
-                        // Reset image gallery to first image
-                        const imageGallery = targetSection.querySelector('.image-gallery.with-sticky-text');
-                        if (imageGallery) {
-                            imageGallery.scrollTop = 0;
-                            
-                            // Set up mobile parallax if needed
-                            if (isMobile()) {
-                                createParallaxTextOverlay();
-                                const contentText = targetSection.querySelector('.content-text.sticky');
-                                if (contentText) {
-                                    // Remove existing scroll listener
-                                    if (imageGallery.parallaxHandler) {
-                                        imageGallery.removeEventListener('scroll', imageGallery.parallaxHandler);
-                                    }
-                                    
-                                    // Add new scroll listener
-                                    imageGallery.parallaxHandler = function(e) {
-                                        handleMobileParallax(imageGallery, contentText);
-                                    };
-                                    imageGallery.addEventListener('scroll', imageGallery.parallaxHandler, { passive: true });
-                                    
-                                    // Test the parallax immediately
-                                    handleMobileParallax(imageGallery, contentText);
-                                }
-                                
-                                // Reset mobile parallax state
-                                sidebar.classList.remove('hidden');
-                                if (parallaxTextOverlay) {
-                                    parallaxTextOverlay.classList.remove('visible');
-                                }
-                            }
-                        }
-                        
-                        // Scroll to top of content area
-                        document.querySelector('.content-area').scrollTop = 0;
+
+                const alreadyActive =
+                    this.classList.contains(
+                        'active'
+                    );
+
+
+                /*
+                   Clicking the selected item
+                   closes the project.
+                */
+
+                if (alreadyActive) {
+
+                    this.classList.remove(
+                        'active'
+                    );
+
+                    targetSection.classList.remove(
+                        'active'
+                    );
+
+
+                    if (isMobile()) {
+                        resetMobileTop();
                     }
+
+                    return;
+                }
+
+
+                /*
+                   Close everything else.
+                */
+
+                navItems.forEach(function(nav) {
+                    nav.classList.remove(
+                        'active'
+                    );
                 });
-            });
 
-            // Handle window resize
-            window.addEventListener('resize', function() {
-                if (!isMobile()) {
-                    // Reset mobile parallax on desktop
-                    sidebar.classList.remove('hidden');
-                    if (parallaxTextOverlay) {
-                        parallaxTextOverlay.classList.remove('visible');
+
+                contentSections.forEach(
+                    function(section) {
+
+                        section.classList.remove(
+                            'active'
+                        );
+
+                    }
+                );
+
+
+                /*
+                   Open selected project.
+                */
+
+                this.classList.add('active');
+
+                targetSection.classList.add(
+                    'active'
+                );
+
+
+                const imageGallery =
+                    targetSection.querySelector(
+                        '.image-gallery.with-sticky-text'
+                    );
+
+
+                if (imageGallery) {
+
+
+                    /*
+                       Always begin at image 1.
+                    */
+
+                    imageGallery.scrollTop = 0;
+
+
+                    if (isMobile()) {
+
+
+                        createParallaxTextOverlay();
+
+
+                        const contentText =
+                            targetSection.querySelector(
+                                '.content-text.sticky'
+                            );
+
+
+                        if (contentText) {
+
+
+                            /*
+                               Remove old listener.
+                            */
+
+                            if (
+                                imageGallery
+                                    .parallaxHandler
+                            ) {
+
+                                imageGallery
+                                    .removeEventListener(
+                                        'scroll',
+                                        imageGallery
+                                            .parallaxHandler
+                                    );
+                            }
+
+
+                            /*
+                               Create new listener.
+                            */
+
+                            imageGallery
+                                .parallaxHandler =
+                                function() {
+
+                                    handleMobileParallax(
+                                        imageGallery,
+                                        contentText
+                                    );
+
+                                };
+
+
+                            imageGallery
+                                .addEventListener(
+                                    'scroll',
+                                    imageGallery
+                                        .parallaxHandler,
+                                    { passive: true }
+                                );
+
+
+                            handleMobileParallax(
+                                imageGallery,
+                                contentText
+                            );
+                        }
+
+
+                        resetMobileTop();
                     }
                 }
-            });
-        });
-    </script>
+
+
+                const contentArea =
+                    document.querySelector(
+                        '.content-area'
+                    );
+
+
+                if (contentArea) {
+                    contentArea.scrollTop = 0;
+                }
+
+            }
+        );
+
+    });
+
+
+    /*
+       IPHONE VIEWPORT CHANGES
+
+       Safari changes visible viewport height
+       when its browser chrome appears/disappears.
+       Re-align to the nearest photograph.
+    */
+
+    window.addEventListener(
+        'resize',
+        function() {
+
+
+            if (!isMobile()) {
+
+                resetMobileTop();
+
+                return;
+            }
+
+
+            const activeSection =
+                document.querySelector(
+                    '.content-section.active'
+                );
+
+
+            if (!activeSection) {
+                return;
+            }
+
+
+            const gallery =
+                activeSection.querySelector(
+                    '.image-gallery.with-sticky-text'
+                );
+
+
+            if (!gallery) {
+                return;
+            }
+
+
+            const frameHeight =
+                gallery.clientHeight;
+
+
+            if (!frameHeight) {
+                return;
+            }
+
+
+            const currentImage =
+                Math.round(
+                    gallery.scrollTop /
+                    frameHeight
+                );
+
+
+            gallery.scrollTop =
+                currentImage *
+                frameHeight;
+
+        }
+    );
+
+});
+
+</script>
+
 </body>
 </html>
