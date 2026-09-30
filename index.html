@@ -280,307 +280,310 @@
 
     @media screen and (max-width: 768px) {
 
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        body {
-            position: fixed;
-            inset: 0;
-        }
-
-        /*
-         * Use the actual dynamic iPhone viewport.
-         * The screen is divided into two genuine equal rows.
-         */
-        .container {
-            display: grid;
-            grid-template-rows: 1fr 1fr;
-            width: 100%;
-            height: 100vh;
-            height: 100dvh;
-        }
-
-        /* -------------------------
-           TOP HALF
-           Navigation
-           ------------------------- */
-
-        .sidebar {
-            position: relative;
-            left: auto;
-            top: auto;
-
-            width: 100%;
-            height: 100%;
-
-            min-height: 0;
-
-            background-color: white;
-            z-index: 1000;
-
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-
-            border-bottom: 1px solid #eee;
-
-            transition: none;
-        }
-
-        /*
-         * JS hides the navigation when the project information
-         * replaces it.
-         */
-        .sidebar.hidden {
-            transform: none;
-            visibility: hidden;
-        }
-
-
-        /* -------------------------
-           BOTTOM HALF
-           Production images
-           ------------------------- */
-
-        .content-area {
-            margin-left: 0;
-            margin-top: 0;
-
-            width: 100%;
-            height: 100%;
-            min-height: 0;
-
-            overflow: hidden;
-            position: relative;
-        }
-
-        .content-section {
-            display: none;
-
-            width: 100%;
-            height: 100%;
-            min-height: 0;
-
-            padding: 0;
-            overflow: hidden;
-
-            position: relative;
-        }
-
-        .content-section.active {
-            display: block;
-        }
-
-        .content-with-images {
-            display: block;
-
-            width: 100%;
-            height: 100%;
-            min-height: 0;
-
-            margin: 0;
-            padding: 0;
-        }
-
-        /*
-         * Gallery occupies exactly the bottom half.
-         */
-        .image-gallery,
-        .image-gallery.with-sticky-text {
-            width: 100%;
-            max-width: none;
-
-            height: 100%;
-            min-height: 0;
-
-            margin: 0;
-            padding: 0;
-
-            display: block;
-
-            overflow-x: hidden;
-            overflow-y: auto;
-
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-
-            -webkit-overflow-scrolling: touch;
-            overscroll-behavior-y: contain;
-        }
-
-        /*
-         * IMPORTANT:
-         * Each image gets one complete gallery frame.
-         *
-         * The frame is the actual bottom half rather than
-         * another independently calculated 50vh.
-         */
-        .content-image,
-        .image-gallery.with-sticky-text .content-image {
-            width: 100%;
-            height: 100%;
-            min-height: 100%;
-            max-height: 100%;
-
-            object-fit: contain;
-            object-position: center center;
-
-            display: block;
-
-            margin: 0;
-            padding: 0;
-
-            border: none;
-            border-radius: 0;
-            box-shadow: none;
-
-            scroll-snap-align: start;
-            scroll-snap-stop: always;
-
-            flex-shrink: 0;
-        }
-
-        /*
-         * Iframes such as Vimeo/YouTube also occupy one frame.
-         */
-        .image-gallery.with-sticky-text iframe.content-image {
-            width: 100%;
-            height: 100%;
-            min-height: 100%;
-            max-height: 100%;
-        }
-
-        /*
-         * Don't apply desktop hover effects on touch screens.
-         */
-        .content-image:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        /*
-         * Desktop project information isn't shown inside
-         * the bottom image panel.
-         */
-        .content-text.sticky {
-            display: none !important;
-        }
-
-
-        /* -------------------------
-           PROJECT TEXT
-           Replaces navigation after first image
-           ------------------------- */
-
-        .mobile-parallax-text {
-            display: none;
-
-            position: fixed;
-            top: 0;
-            left: 0;
-
-            width: 100%;
-            height: 50vh;
-            height: 50dvh;
-
-            background-color: white;
-
-            z-index: 1001;
-
-            border-bottom: 1px solid #eee;
-
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-
-            opacity: 0;
-            padding: 0;
-        }
-
-        .mobile-parallax-text.visible {
-            display: block;
-            opacity: 1;
-        }
-
-        .mobile-parallax-text .content-text {
-            width: 100%;
-            max-width: none;
-
-            min-height: 100%;
-
-            margin: 0;
-            padding: 20px;
-
-            box-sizing: border-box;
-
-            line-height: 1.4;
-            white-space: pre-line;
-
-            text-align: center;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 14px;
-            font-family: 'Times New Roman', serif;
-        }
-
-        .mobile-parallax-text .content-text.right-align {
-            text-align: right;
-            justify-content: flex-end;
-        }
-
-
-        /* -------------------------
-           CREDITS
-           ------------------------- */
-
-        .credits.with-sticky-text {
-            position: absolute;
-
-            bottom: 10px;
-            right: 10px;
-
-            margin: 0;
-
-            background: rgba(255, 255, 255, 0.9);
-
-            padding: 5px 10px;
-
-            border-radius: 3px;
-
-            font-size: 10px;
-
-            z-index: 10;
-        }
-
-
-        /* -------------------------
-           BIO / non-gallery sections
-           ------------------------- */
-
-        .content-section > .content-text:not(.sticky) {
-            padding: 20px;
-            margin: 0;
-            max-width: none;
-            overflow-y: auto;
-            height: 100%;
-        }
-
-        .content-section > .image-gallery:not(.with-sticky-text) {
-            height: 100%;
-        }
-
-        .content-image.portrait {
-            width: 100%;
-            max-width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
     }
+
+    body {
+        position: fixed;
+        inset: 0;
+    }
+
+    /* Entire iPhone screen = two equal halves */
+    .container {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+    }
+
+
+    /* =========================
+       TOP HALF
+       ========================= */
+
+    .sidebar {
+        position: relative;
+        left: auto;
+        top: auto;
+
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+
+        background-color: white;
+        z-index: 1000;
+
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+
+        border-bottom: 1px solid #eee;
+        transition: none;
+    }
+
+    .sidebar.hidden {
+        transform: none;
+        visibility: hidden;
+    }
+
+
+    /* =========================
+       BOTTOM HALF
+       ========================= */
+
+    .content-area {
+        margin-left: 0;
+        margin-top: 0;
+
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+
+        overflow: hidden;
+        position: relative;
+    }
+
+    .content-section {
+        display: none;
+
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+
+        padding: 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .content-section.active {
+        display: block;
+    }
+
+    .content-with-images {
+        display: block;
+
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+
+        margin: 0;
+        padding: 0;
+    }
+
+
+    /* =========================
+       IMAGE GALLERY
+
+       Vertical gallery where every
+       photograph occupies exactly
+       one bottom-half frame.
+       ========================= */
+
+    .image-gallery,
+    .image-gallery.with-sticky-text {
+        width: 100%;
+        max-width: none;
+
+        height: 100%;
+        min-height: 0;
+
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        overflow-x: hidden;
+        overflow-y: scroll;
+
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: contain;
+    }
+
+
+    /* =========================
+       INDIVIDUAL IMAGES
+
+       Each image = exactly one frame
+       and snaps firmly into position.
+       ========================= */
+
+    .content-image,
+    .image-gallery.with-sticky-text .content-image {
+        width: 100%;
+
+        height: 100%;
+        min-height: 100%;
+        max-height: 100%;
+
+        flex: 0 0 100%;
+
+        object-fit: contain;
+        object-position: center center;
+
+        display: block;
+
+        margin: 0;
+        padding: 0;
+
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    /* Videos behave like photographs */
+    .image-gallery.with-sticky-text iframe.content-image {
+        width: 100%;
+
+        height: 100%;
+        min-height: 100%;
+        max-height: 100%;
+
+        flex: 0 0 100%;
+
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .content-image:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+
+    /* Hide desktop project text */
+    .content-text.sticky {
+        display: none !important;
+    }
+
+
+    /* =========================
+       PROJECT TEXT OVERLAY
+
+       Replaces navigation once
+       you've moved beyond image 1.
+       ========================= */
+
+    .mobile-parallax-text {
+        display: none;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 50vh;
+        height: 50dvh;
+
+        background-color: white;
+
+        z-index: 1001;
+
+        border-bottom: 1px solid #eee;
+
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+
+        opacity: 0;
+        padding: 0;
+    }
+
+    .mobile-parallax-text.visible {
+        display: block;
+        opacity: 1;
+    }
+
+    .mobile-parallax-text .content-text {
+        width: 100%;
+        max-width: none;
+
+        min-height: 100%;
+
+        margin: 0;
+        padding: 20px;
+
+        box-sizing: border-box;
+
+        line-height: 1.4;
+        white-space: pre-line;
+
+        text-align: center;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        font-size: 14px;
+        font-family: 'Times New Roman', serif;
+    }
+
+    .mobile-parallax-text .content-text.right-align {
+        text-align: right;
+        justify-content: flex-end;
+    }
+
+
+    /* =========================
+       PHOTO CREDITS
+       ========================= */
+
+    .credits.with-sticky-text {
+        position: absolute;
+
+        bottom: 10px;
+        right: 10px;
+
+        margin: 0;
+
+        background: rgba(255, 255, 255, 0.9);
+
+        padding: 5px 10px;
+        border-radius: 3px;
+
+        font-size: 10px;
+
+        z-index: 10;
+    }
+
+
+    /* =========================
+       BIO / OTHER SECTIONS
+       ========================= */
+
+    .content-section > .content-text:not(.sticky) {
+        padding: 20px;
+        margin: 0;
+
+        max-width: none;
+
+        overflow-y: auto;
+        height: 100%;
+    }
+
+    .content-section > .image-gallery:not(.with-sticky-text) {
+        height: 100%;
+    }
+
+    .content-image.portrait {
+        width: 100%;
+        max-width: 100%;
+
+        height: 100%;
+        min-height: 100%;
+
+        object-fit: contain;
+    }
+}
 </style>
 </head>
 <body>
