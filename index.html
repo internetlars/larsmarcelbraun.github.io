@@ -329,8 +329,8 @@ iframe {
         display: block;
         width: 100%;
         max-width: none;
-        height: 100%;
-        margin: 0;
+        height: calc(100% - 7dvh);
+        margin: 7dvh 0 0 0;
         padding: 0;
         overflow-x: hidden;
         overflow-y: auto;
@@ -1133,7 +1133,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (target === 'lars-marcel-braun') {
 
+                /* Always reopen the bio at its very first line on iOS. */
                 targetSection.scrollTop = 0;
+                targetSection.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+                requestAnimationFrame(function () {
+                    targetSection.scrollTop = 0;
+                    targetSection.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+                });
 
                 showNavigation();
             }
