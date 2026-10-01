@@ -243,6 +243,33 @@ iframe {
 }
 
 
+/* IDLE / OPENING IMAGE */
+
+.idle-gallery {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    padding: 40px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.idle-gallery.hidden {
+    display: none;
+}
+
+.idle-gallery img {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    height: 80vh;
+    object-fit: contain;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+
 /* =========================================================
    IPHONE / MOBILE
    ========================================================= */
@@ -300,6 +327,34 @@ iframe {
         min-height: 0; /* critical: overrides desktop min-height: 100vh */
         margin: 0;
         overflow: hidden;
+    }
+
+    .idle-gallery {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .idle-gallery.hidden {
+        display: none;
+    }
+
+    .idle-gallery img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        object-fit: contain;
+        object-position: center center;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
     }
 
     .content-section {
@@ -553,6 +608,10 @@ iframe {
 
 <main class="content-area">
 
+<div class="idle-gallery" id="idle-gallery" aria-hidden="true">
+    <img id="idle-image" src="./websitepics/MS100215.jpg" alt="">
+</div>
+
 
 <!-- BIO -->
 
@@ -568,7 +627,7 @@ As an assistant and associate director, he has collaborated with artists includi
 
 Beyond the opera house, Braun has created immersive installations for Milkshake Festival in Amsterdam, bringing together theatre, nightlife, drag, and dance. He also works on international touring productions with Askonas Holt in both artistic and production capacities, most recently with Joyce DiDonato, with responsibilities spanning staging, lighting, video, show direction, and production management.
 
-Braun is a fellow of Akademie Musiktheater heute in the 2024–2026 selection</div>
+Braun is a fellow of Akademie Musiktheater heute in the 2024–2026 selection.</div>
 
 <div class="image-gallery">
 <img class="content-image portrait"
@@ -1002,6 +1061,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const navItems = document.querySelectorAll('.nav-item');
     const contentSections = document.querySelectorAll('.content-section');
     const sidebar = document.querySelector('.sidebar');
+    const idleGallery = document.getElementById('idle-gallery');
+    const idleImage = document.getElementById('idle-image');
+
+    const idleImages = [
+        './websitepics/MS100215.jpg',
+        './websitepics/DSC03137.jpg',
+        './websitepics/DasSchlauFuchs_HP2_FotoJQ_001.jpg',
+        './websitepics/humanoid_ohp_02256_FotoSebastianHoppe.jpg',
+        './websitepics/PhotoWerK_OG_Geschichte_HP2_LRes_005.jpg',
+        './websitepics/tancredi-01.webp'
+    ];
 
     let mobileTextOverlay = null;
 
@@ -1020,6 +1090,15 @@ document.addEventListener('DOMContentLoaded', function () {
     navItems.forEach(function (item) {
         item.classList.remove('active');
     });
+
+    if (idleImage && idleImages.length) {
+        const randomIndex = Math.floor(Math.random() * idleImages.length);
+        idleImage.src = idleImages[randomIndex];
+    }
+
+    if (idleGallery) {
+        idleGallery.classList.remove('hidden');
+    }
 
 
     /* MOBILE PROJECT TEXT */
@@ -1141,6 +1220,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 showNavigation();
 
+                if (idleGallery) {
+                    idleGallery.classList.remove('hidden');
+                }
+
                 return;
             }
 
@@ -1160,6 +1243,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             this.classList.add('active');
             targetSection.classList.add('active');
+
+            if (idleGallery) {
+                idleGallery.classList.add('hidden');
+            }
 
 
             /* Project gallery */
